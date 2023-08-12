@@ -1,0 +1,19 @@
+{
+  "name": "lrm-example-webpack",
+  "private": true,
+  "scripts": {
+    "build": "webpack-cli"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^2.4.0",
+    "osrm-text-instructions": "0.14.1-beta.3"
+  },
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "file-loader": "^6.2.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "webpack": "^5.84.1",
+    "webpack-cli": "^5.1.1"
+  }
+}

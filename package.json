@@ -1,15 +1,17 @@
 {
-  "name": "leaflet-routing-machine",
-  "version": "3.2.12",
+  "name": "@curtisy/leaflet-routing-machine",
+  "version": "4.0.0-beta.01",
   "description": "Routing for Leaflet",
   "directories": {
     "example": "examples",
     "dist": "dist"
   },
   "scripts": {
-    "prepare": "browserify -t browserify-shim -p browserify-derequire -o dist/leaflet-routing-machine.js src/index.js && uglifyjs dist/leaflet-routing-machine.js >dist/leaflet-routing-machine.min.js",
+    "build": "node build.js",
     "publish": "scripts/publish.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint --ext .ts src",
+    "test": "jest",
+    "docs": "typedoc"
   },
   "repository": {
     "type": "git",
@@ -24,25 +26,39 @@
     "name": "Per Liedman",
     "email": "per@liedman.net"
   },
+  "contributors": [
+    {
+      "name": "Alexander Oberländer (curtisy)",
+      "email": "curtisy@curtisy.one"
+    }
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/perliedman/leaflet-routing-machine/issues"
   },
   "homepage": "https://github.com/perliedman/leaflet-routing-machine",
-  "browserify-shim": {
-    "leaflet": "global:L"
-  },
-  "main": "./dist/leaflet-routing-machine.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "devDependencies": {
-    "browserify": "^14.1.0",
-    "browserify-derequire": "^0.9.4",
-    "browserify-shim": "^3.8.13",
-    "derequire": "^2.0.6",
-    "uglify-js": "^2.8.2"
+    "@types/jest": "^29.5.1",
+    "@types/leaflet": "^1.9.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "esbuild": "^0.17.19",
+    "esbuild-node-externals": "^1.7.0",
+    "eslint": "^8.41.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "typedoc": "^0.24.7",
+    "typedoc-plugin-mdn-links": "^3.0.3",
+    "typedoc-plugin-missing-exports": "^2.0.0",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@mapbox/corslite": "0.0.7",
-    "@mapbox/polyline": "^0.2.0",
-    "osrm-text-instructions": "^0.13.2"
+    "@googlemaps/polyline-codec": "^1.0.28",
+    "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^2.4.0"
   }
 }
