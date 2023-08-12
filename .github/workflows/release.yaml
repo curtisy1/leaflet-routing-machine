@@ -2,8 +2,7 @@ name: Create release
 
 on:
   push:
-    tags:
-    - 'v*'
+    branches: master
 
 jobs:
   generate-changelog:
@@ -44,7 +43,7 @@ jobs:
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.ref }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
           name: "Release v${{ env.RELEASE_VERSION }}"
           body: "${{ needs.generate-changelog.outputs.release_body }}"
 
