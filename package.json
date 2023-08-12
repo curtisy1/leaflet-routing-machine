@@ -1,5 +1,5 @@
 {
-  "name": "leaflet-routing-machine",
+  "name": "@curtisy/leaflet-routing-machine",
   "version": "4.0.0-beta.01",
   "description": "Routing for Leaflet",
   "directories": {
