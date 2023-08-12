@@ -9,7 +9,7 @@ jobs:
     name: Generate changelog
     runs-on: ubuntu-latest
     outputs:
-      release_body: ${{ steps.release.outputs.release_body }}
+      release_body: ${{ steps.git-cliff.outputs.content }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -23,18 +23,6 @@ jobs:
           args: -vv --latest --strip header
         env:
           OUTPUT: CHANGELOG.md
-      - name: Set the release body
-        id: release
-        shell: bash
-        run: |
-          r=$(cat ${{ steps.git-cliff.outputs.changelog }})
-          r="$(printf "$r" | tail -n +3)"
-          r="${r//'%'/'%25'}"
-          r="${r//$'\n'/'%0A'}"
-          r="${r//$'\r'/'%0D'}"
-          echo 'RELEASE_BODY<<EOF' >> $GITHUB_ENV
-          echo "$r" >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.1
