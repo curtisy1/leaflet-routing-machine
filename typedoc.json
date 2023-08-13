@@ -6,7 +6,6 @@
   "out": "docs",
   "name": "Leaflet Routing Machine API",
   "excludeExternals": true,
-  "internalModule": "globals",
   "externalSymbolLinkMappings": {
     "@types/leaflet": {
       "CircleMarkerOptions": "https://leafletjs.com/reference.html#circlemarker",
