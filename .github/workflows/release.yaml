@@ -23,16 +23,22 @@ jobs:
           args: -vv --latest --strip header
         env:
           OUTPUT: CHANGELOG.md
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.1
+
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: 16
+      - name: Get version from package.json
+        run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: "Release v${{ env.RELEASE_VERSION }}"
+          tag: ${{ env.PACKAGE_VERSION }}
+          name: "Release ${{ env.PACKAGE_VERSION }}"
           body: "${{ needs.generate-changelog.outputs.release_body }}"
 
   publish-to-npm:
