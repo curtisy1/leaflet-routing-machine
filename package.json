@@ -1,6 +1,6 @@
 {
   "name": "clrm-next",
-  "version": "4.0.0-beta-0",
+  "version": "4.0.0-beta-1",
   "description": "Routing for Leaflet",
   "directories": {
     "example": "examples",
