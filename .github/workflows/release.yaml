@@ -2,11 +2,26 @@ name: Create release
 
 on:
   push:
-    branches: master
+    branches: [master]
 
 jobs:
+  get-package-vesion:
+    name: Get package version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Get version from package.json
+        run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
   generate-changelog:
     name: Generate changelog
+    needs: get-package-vesion
     runs-on: ubuntu-latest
     outputs:
       release_body: ${{ steps.git-cliff.outputs.content }}
@@ -19,8 +34,7 @@ jobs:
         uses: orhun/git-cliff-action@v2
         id: git-cliff
         with:
-          config: config/cliff.toml
-          args: -vv --latest --strip header
+          args: "-v --tag v${{ env.PACKAGE_VERSION }}"
         env:
           OUTPUT: CHANGELOG.md
 
@@ -42,8 +56,8 @@ jobs:
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ env.PACKAGE_VERSION }}
-          name: "Release ${{ env.PACKAGE_VERSION }}"
+          tag: "v${{ env.PACKAGE_VERSION }}"
+          name: "Release v${{ env.PACKAGE_VERSION }}"
           body: "${{ needs.generate-changelog.outputs.release_body }}"
 
   publish-to-npm:
