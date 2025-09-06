@@ -25,7 +25,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">Formatter</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L45">formatter.ts:45</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L56">formatter.ts:56</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -38,7 +38,6 @@
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Properties</h3>
 <div class="tsd-index-list"><a href="Formatter.html#defaultOptions" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>default<wbr/>Options</span></a>
-<a href="Formatter.html#localization" class="tsd-index-link tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>localization</span></a>
 <a href="Formatter.html#options" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>options</span></a>
 </div></section>
 <section class="tsd-index-section">
@@ -47,6 +46,7 @@
 <a href="Formatter.html#formatDistance" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>format<wbr/>Distance</span></a>
 <a href="Formatter.html#formatInstruction" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>format<wbr/>Instruction</span></a>
 <a href="Formatter.html#formatTime" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>format<wbr/>Time</span></a>
+<a href="Formatter.html#getDirectionInstruction" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Direction<wbr/>Instruction</span></a>
 <a href="Formatter.html#getIconName" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Icon<wbr/>Name</span></a>
 <a href="Formatter.html#getInstructionTemplate" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Instruction<wbr/>Template</span></a>
 <a href="Formatter.html#round" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>round</span></a>
@@ -66,12 +66,12 @@
 <h4 class="tsd-returns-title">Returns <a href="Formatter.html" class="tsd-signature-type tsd-kind-class">Formatter</a></h4><aside class="tsd-sources">
 <p>Overrides L.Class.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L65">formatter.ts:65</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L66">formatter.ts:66</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-is-private"><a id="defaultOptions" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>default<wbr/>Options</span><a href="#defaultOptions" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">default<wbr/>Options</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">distanceTemplate</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">roundingSensitivity</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">unitNames</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span><br/><span>        </span><span class="tsd-kind-property">hours</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">kilometers</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">meters</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">miles</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">minutes</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">seconds</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">yards</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">units</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = ...</span></div>
+<div class="tsd-signature"><span class="tsd-kind-property">default<wbr/>Options</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">distanceTemplate</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">roundingSensitivity</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">unitNames</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Units</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">units</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = ...</span></div>
 <div class="tsd-type-declaration">
 <h4>Type declaration</h4>
 <ul class="tsd-parameters">
@@ -80,36 +80,16 @@
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-property">rounding<wbr/>Sensitivity</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5></li>
 <li class="tsd-parameter">
-<h5><span class="tsd-kind-property">unit<wbr/>Names</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">hours</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">kilometers</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">meters</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">miles</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">minutes</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">seconds</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">yards</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></h5>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">hours</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">kilometers</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">meters</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">miles</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">minutes</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">seconds</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li>
-<li class="tsd-parameter">
-<h5><span class="tsd-kind-property">yards</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li></ul></li>
+<h5><span class="tsd-kind-property">unit<wbr/>Names</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Units</span></h5></li>
 <li class="tsd-parameter">
 <h5><span class="tsd-kind-property">units</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L46">formatter.ts:46</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-is-private"><a id="localization" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <code class="tsd-tag ts-flagReadonly">Readonly</code> <span>localization</span><a href="#localization" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">localization</span><span class="tsd-signature-symbol">:</span> <a href="Localization.html" class="tsd-signature-type tsd-kind-class">Localization</a></div><aside class="tsd-sources">
-<ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L63">formatter.ts:63</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L57">formatter.ts:57</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member"><a id="options" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>options</span><a href="#options" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">options</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type ">FormatterOptions</span></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L61">formatter.ts:61</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L64">formatter.ts:64</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member"><a id="capitalize" class="tsd-anchor"></a>
@@ -124,7 +104,7 @@
 <h5><span class="tsd-kind-parameter">s</span>: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L212">formatter.ts:212</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L251">formatter.ts:251</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="formatDistance" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>format<wbr/>Distance</span><a href="#formatDistance" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -141,7 +121,7 @@
 <h5><span class="tsd-kind-parameter">sensitivity</span>: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L79">formatter.ts:79</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L78">formatter.ts:78</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="formatInstruction" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>format<wbr/>Instruction</span><a href="#formatInstruction" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -158,7 +138,7 @@
 <h5><span class="tsd-kind-parameter">index</span>: <span class="tsd-signature-type">number</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L153">formatter.ts:153</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L158">formatter.ts:158</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="formatTime" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>format<wbr/>Time</span><a href="#formatTime" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -173,11 +153,27 @@
 <h5><span class="tsd-kind-parameter">time</span>: <span class="tsd-signature-type">number</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L131">formatter.ts:131</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L134">formatter.ts:134</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member"><a id="getDirectionInstruction" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>Direction<wbr/>Instruction</span><a href="#getDirectionInstruction" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="getDirectionInstruction.getDirectionInstruction-1"><span class="tsd-kind-call-signature">get<wbr/>Direction<wbr/>Instruction</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">instructionType</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#getDirectionInstruction.getDirectionInstruction-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Get the instruction for a specific direction by the instruction type.
+If the type is something other than a direction, nothing is returned.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">instructionType</span>: <span class="tsd-signature-type ">InstructionType</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L227">formatter.ts:227</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getIconName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Icon<wbr/>Name</span><a href="#getIconName" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="getIconName.getIconName-1"><span class="tsd-kind-call-signature">get<wbr/>Icon<wbr/>Name</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">instruction</span>, <span class="tsd-kind-parameter">index</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;depart&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;arrive&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;via&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;enter-roundabout&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;continue&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;u-turn&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-left&quot;</span><a href="#getIconName.getIconName-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="getIconName.getIconName-1"><span class="tsd-kind-call-signature">get<wbr/>Icon<wbr/>Name</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">instruction</span>, <span class="tsd-kind-parameter">index</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;depart&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;arrive&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;via&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;enter-roundabout&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;continue&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;u-turn&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-left&quot;</span><a href="#getIconName.getIconName-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Returns an icon name depending on the instruction type or modifier
 If it&#39;s a simple text instruction, no icon is returned by default</p>
@@ -189,13 +185,13 @@ If it&#39;s a simple text instruction, no icon is returned by default</p>
 <h5><span class="tsd-kind-parameter">instruction</span>: <span class="tsd-signature-type ">IInstruction</span></h5></li>
 <li>
 <h5><span class="tsd-kind-parameter">index</span>: <span class="tsd-signature-type">number</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;depart&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;arrive&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;via&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;enter-roundabout&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;continue&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;u-turn&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-left&quot;</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">&quot;&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;depart&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;arrive&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;via&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;enter-roundabout&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;continue&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-right&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;u-turn&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;sharp-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;turn-left&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;bear-left&quot;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L172">formatter.ts:172</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L182">formatter.ts:182</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="getInstructionTemplate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Instruction<wbr/>Template</span><a href="#getInstructionTemplate" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
-<li class="tsd-signature tsd-anchor-link" id="getInstructionTemplate.getInstructionTemplate-1"><span class="tsd-kind-call-signature">get<wbr/>Instruction<wbr/>Template</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">instruction</span>, <span class="tsd-kind-parameter">index</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><a href="#getInstructionTemplate.getInstructionTemplate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="getInstructionTemplate.getInstructionTemplate-1"><span class="tsd-kind-call-signature">get<wbr/>Instruction<wbr/>Template</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">instruction</span>, <span class="tsd-kind-parameter">index</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#getInstructionTemplate.getInstructionTemplate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -204,9 +200,9 @@ If it&#39;s a simple text instruction, no icon is returned by default</p>
 <h5><span class="tsd-kind-parameter">instruction</span>: <span class="tsd-signature-type ">IDirectionInstruction</span></h5></li>
 <li>
 <h5><span class="tsd-kind-parameter">index</span>: <span class="tsd-signature-type">number</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4><aside class="tsd-sources">
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L216">formatter.ts:216</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L255">formatter.ts:255</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member"><a id="round" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>round</span><a href="#round" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -221,7 +217,7 @@ If it&#39;s a simple text instruction, no icon is returned by default</p>
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> <span class="tsd-kind-parameter">sensitivity</span>: <span class="tsd-signature-type">number</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/b4d3637/src/formatter.ts#L118">formatter.ts:118</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/curtisy1/leaflet-routing-machine/blob/9c15a91/src/formatter.ts#L120">formatter.ts:120</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -242,12 +238,12 @@ If it&#39;s a simple text instruction, no icon is returned by default</p>
 <ul>
 <li><a href="#constructor" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg><span>constructor</span></a></li>
 <li><a href="#defaultOptions" class="tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>default<wbr/>Options</span></a></li>
-<li><a href="#localization" class="tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>localization</span></a></li>
 <li><a href="#options" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>options</span></a></li>
 <li><a href="#capitalize" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>capitalize</span></a></li>
 <li><a href="#formatDistance" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>format<wbr/>Distance</span></a></li>
 <li><a href="#formatInstruction" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>format<wbr/>Instruction</span></a></li>
 <li><a href="#formatTime" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>format<wbr/>Time</span></a></li>
+<li><a href="#getDirectionInstruction" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Direction<wbr/>Instruction</span></a></li>
 <li><a href="#getIconName" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Icon<wbr/>Name</span></a></li>
 <li><a href="#getInstructionTemplate" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Instruction<wbr/>Template</span></a></li>
 <li><a href="#round" class=""><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>round</span></a></li></ul></div></details></div>
@@ -260,7 +256,6 @@ If it&#39;s a simple text instruction, no icon is returned by default</p>
 <li><a href="GeocoderElement.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Geocoder<wbr/>Element</span></a></li>
 <li><a href="ItineraryBuilder.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Itinerary<wbr/>Builder</span></a></li>
 <li><a href="Line.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Line</span></a></li>
-<li><a href="Localization.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Localization</span></a></li>
 <li><a href="Mapbox.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Mapbox</span></a></li>
 <li><a href="OSRMv1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>OSRMv1</span></a></li>
 <li><a href="Plan.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Plan</span></a></li>
@@ -272,7 +267,6 @@ If it&#39;s a simple text instruction, no icon is returned by default</p>
 <li><a href="../functions/geocoderElement-1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>geocoder<wbr/>Element</span></a></li>
 <li><a href="../functions/itineraryBuilder-1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>itinerary<wbr/>Builder</span></a></li>
 <li><a href="../functions/line-1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>line</span></a></li>
-<li><a href="../functions/localization-1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>localization</span></a></li>
 <li><a href="../functions/mapbox-1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>mapbox</span></a></li>
 <li><a href="../functions/osrmv1-1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>osrmv1</span></a></li>
 <li><a href="../functions/plan-1.html"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg><span>plan</span></a></li>
