@@ -9,7 +9,7 @@
   "scripts": {
     "build": "node build.js",
     "publish": "scripts/publish.sh",
-    "lint": "eslint --ext .ts src",
+    "lint": "biome lint",
     "test": "jest",
     "docs": "typedoc",
     "changelog": "git cliff --tag 4.0.0-alpha-01 -o CHANGELOG.md"
