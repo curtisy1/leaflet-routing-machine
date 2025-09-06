@@ -1,6 +1,6 @@
 {
   "name": "clrm-next",
-  "version": "4.0.0-beta-1",
+  "version": "4.0.0-alpha-01",
   "description": "Routing for Leaflet",
   "directories": {
     "example": "examples",
@@ -12,7 +12,7 @@
     "lint": "eslint --ext .ts src",
     "test": "jest",
     "docs": "typedoc",
-    "changelog": "git cliff --tag 4.0.0-beta-0 -o CHANGELOG.md"
+    "changelog": "git cliff --tag 4.0.0-alpha-01 -o CHANGELOG.md"
   },
   "repository": {
     "type": "git",
