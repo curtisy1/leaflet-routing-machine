@@ -1,4 +1,4 @@
-import { Locale } from './types';
+import type { Locale } from './types';
 
 const plLocale: Locale = {
   directions: {
@@ -16,36 +16,28 @@ const plLocale: Locale = {
     SlightLeft: 'lekko w lewo',
     Left: 'w lewo',
     SharpLeft: 'ostro w lewo',
-    Uturn: 'zawróć'
+    Uturn: 'zawróć',
   },
   instructions: {
     // instruction, postfix if the road is named
-    'Head':
-      ['Kieruj się na {dir}', ' na {road}'],
-    'Continue':
-      ['Jedź dalej przez {dir}'],
-    'TurnAround':
-      ['Zawróć'],
-    'WaypointReached':
-      ['Punkt pośredni'],
-    'Roundabout':
-      ['Wyjedź {exitStr} zjazdem na rondzie', ' na {road}'],
-    'DestinationReached':
-      ['Dojechano do miejsca docelowego'],
-    'Fork': ['Na rozwidleniu {modifier}', ' na {road}'],
-    'Merge': ['Zjedź {modifier}', ' na {road}'],
-    'OnRamp': ['Wjazd {modifier}', ' na {road}'],
-    'OffRamp': ['Zjazd {modifier}', ' na {road}'],
-    'EndOfRoad': ['Skręć {modifier} na końcu drogi', ' na {road}'],
-    'Onto': 'na {road}'
+    Head: ['Kieruj się na {dir}', ' na {road}'],
+    Continue: ['Jedź dalej przez {dir}'],
+    TurnAround: ['Zawróć'],
+    WaypointReached: ['Punkt pośredni'],
+    Roundabout: ['Wyjedź {exitStr} zjazdem na rondzie', ' na {road}'],
+    DestinationReached: ['Dojechano do miejsca docelowego'],
+    Fork: ['Na rozwidleniu {modifier}', ' na {road}'],
+    Merge: ['Zjedź {modifier}', ' na {road}'],
+    OnRamp: ['Wjazd {modifier}', ' na {road}'],
+    OffRamp: ['Zjazd {modifier}', ' na {road}'],
+    EndOfRoad: ['Skręć {modifier} na końcu drogi', ' na {road}'],
+    Onto: 'na {road}',
   },
-  formatOrder: function (n) {
-    return n + '.';
-  },
+  formatOrder: (n) => `${n}.`,
   ui: {
     startPlaceholder: 'Początek',
     viaPlaceholder: 'Przez {viaNumber}',
-    endPlaceholder: 'Koniec'
+    endPlaceholder: 'Koniec',
   },
   units: {
     meters: 'm',
@@ -54,8 +46,8 @@ const plLocale: Locale = {
     miles: 'mi',
     hours: 'godz',
     minutes: 'min',
-    seconds: 's'
-  }
+    seconds: 's',
+  },
 };
 
 export default plLocale;

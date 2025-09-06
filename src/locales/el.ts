@@ -1,4 +1,4 @@
-import { Locale } from './types';
+import type { Locale } from './types';
 
 const elLocale: Locale = {
   directions: {
@@ -9,43 +9,32 @@ const elLocale: Locale = {
     S: 'νότια',
     SW: 'νοτιοδυτικά',
     W: 'δυτικά',
-    NW: 'βορειοδυτικά'
+    NW: 'βορειοδυτικά',
   },
   instructions: {
     // instruction, postfix if the road is named
-    'Head':
-      ['Κατευθυνθείτε {dir}', ' στην {road}'],
-    'Continue':
-      ['Συνεχίστε {dir}', ' στην {road}'],
-    'SlightRight':
-      ['Ελαφρώς δεξιά', ' στην {road}'],
-    'Right':
-      ['Δεξιά', ' στην {road}'],
-    'SharpRight':
-      ['Απότομη δεξιά στροφή', ' στην {road}'],
-    'TurnAround':
-      ['Κάντε αναστροφή'],
-    'SharpLeft':
-      ['Απότομη αριστερή στροφή', ' στην {road}'],
-    'Left':
-      ['Αριστερά', ' στην {road}'],
-    'SlightLeft':
-      ['Ελαφρώς αριστερά', ' στην {road}'],
-    'WaypointReached':
-      ['Φτάσατε στο σημείο αναφοράς'],
-    'Roundabout':
-      ['Ακολουθήστε την {exitStr} έξοδο στο κυκλικό κόμβο', ' στην {road}'],
-    'DestinationReached':
-      ['Φτάσατε στον προορισμό σας'],
+    Head: ['Κατευθυνθείτε {dir}', ' στην {road}'],
+    Continue: ['Συνεχίστε {dir}', ' στην {road}'],
+    SlightRight: ['Ελαφρώς δεξιά', ' στην {road}'],
+    Right: ['Δεξιά', ' στην {road}'],
+    SharpRight: ['Απότομη δεξιά στροφή', ' στην {road}'],
+    TurnAround: ['Κάντε αναστροφή'],
+    SharpLeft: ['Απότομη αριστερή στροφή', ' στην {road}'],
+    Left: ['Αριστερά', ' στην {road}'],
+    SlightLeft: ['Ελαφρώς αριστερά', ' στην {road}'],
+    WaypointReached: ['Φτάσατε στο σημείο αναφοράς'],
+    Roundabout: [
+      'Ακολουθήστε την {exitStr} έξοδο στο κυκλικό κόμβο',
+      ' στην {road}',
+    ],
+    DestinationReached: ['Φτάσατε στον προορισμό σας'],
   },
-  formatOrder: function (n) {
-    return n + 'º';
-  },
+  formatOrder: (n) => `${n}º`,
   ui: {
     startPlaceholder: 'Αφετηρία',
     viaPlaceholder: 'μέσω {viaNumber}',
-    endPlaceholder: 'Προορισμός'
-  }
+    endPlaceholder: 'Προορισμός',
+  },
 };
 
 export default elLocale;

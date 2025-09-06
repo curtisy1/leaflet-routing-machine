@@ -1,8 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "entryPoints": [
-    "src/index.ts",
-  ],
+  "entryPoints": ["src/index.ts"],
   "out": "docs",
   "name": "Leaflet Routing Machine API",
   "excludeExternals": true,
@@ -30,7 +28,7 @@
       "GeocodingCallback": "https://www.liedman.net/leaflet-control-geocoder/docs/globals.html#geocodingcallback",
       "GeocodingResult": "https://www.liedman.net/leaflet-control-geocoder/docs/interfaces/geocodingresult.html",
       "IGeocoder": "https://www.liedman.net/leaflet-control-geocoder/docs/interfaces/igeocoder.html",
-      "*": "https://www.liedman.net/leaflet-control-geocoder/docs/",
+      "*": "https://www.liedman.net/leaflet-control-geocoder/docs/"
     }
   }
 }

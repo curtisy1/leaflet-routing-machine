@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { IRoute } from './common/types'
+import type { IRoute } from './common/types';
 
 export interface LineOptions extends L.LayerOptions {
   /**
@@ -31,12 +31,11 @@ export interface LineOptions extends L.LayerOptions {
   missingRouteStyles?: L.PathOptions[];
 }
 
-class EventedLayerGroup {
-  constructor(...args: any[]) {
-  }
-}
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: Typescript needs this to generate proper js code
+class EventedLayerGroup {}
 
-interface EventedLayerGroup extends L.LayerGroup, L.Evented { }
+// biome-ignore lint/correctness/noUnusedVariables: Typescript needs this to generate proper js code
+interface EventedLayerGroup extends L.LayerGroup, L.Evented {}
 L.Util.extend(EventedLayerGroup.prototype, L.LayerGroup.prototype);
 L.Util.extend(EventedLayerGroup.prototype, L.Evented.prototype);
 
@@ -48,17 +47,17 @@ export default class Line extends L.LayerGroup {
     styles: [
       { color: 'black', opacity: 0.15, weight: 9 },
       { color: 'white', opacity: 0.8, weight: 6 },
-      { color: 'red', opacity: 1, weight: 2 }
+      { color: 'red', opacity: 1, weight: 2 },
     ],
     missingRouteStyles: [
       { color: 'black', opacity: 0.15, weight: 7 },
       { color: 'white', opacity: 0.6, weight: 4 },
-      { color: 'gray', opacity: 0.8, weight: 2, dashArray: '7,12' }
+      { color: 'gray', opacity: 0.8, weight: 2, dashArray: '7,12' },
     ],
     addWaypoints: true,
     extendToWaypoints: true,
-    missingRouteTolerance: 10
-  }
+    missingRouteTolerance: 10,
+  };
 
   options: LineOptions;
 
@@ -71,7 +70,7 @@ export default class Line extends L.LayerGroup {
     this.options = {
       ...this.defaultOptions,
       ...options,
-    }
+    };
 
     this.route = route;
 
@@ -82,7 +81,8 @@ export default class Line extends L.LayerGroup {
     this.addSegment(
       route.coordinates,
       this.options.styles ?? this.defaultOptions.styles,
-      this.options.addWaypoints);
+      this.options.addWaypoints,
+    );
   }
 
   /**
@@ -95,7 +95,9 @@ export default class Line extends L.LayerGroup {
   findWaypointIndices() {
     return this.route.inputWaypoints
       .filter((waypoint) => waypoint.latLng)
-      .map((waypoint) => this.findClosestRoutePoint(waypoint.latLng!));
+      .map((waypoint) =>
+        this.findClosestRoutePoint(waypoint.latLng as L.LatLng),
+      );
   }
 
   findClosestRoutePoint(latlng: L.LatLng) {
@@ -117,25 +119,36 @@ export default class Line extends L.LayerGroup {
 
   extendToWaypoints() {
     const waypointIndices = this.getWaypointIndices();
-    let waypointLatLng: L.LatLng;
-    let routeCoordinates: L.LatLng;
 
     const {
       missingRouteTolerance = this.defaultOptions.missingRouteTolerance,
-      missingRouteStyles = this.defaultOptions.missingRouteStyles
+      missingRouteStyles = this.defaultOptions.missingRouteStyles,
     } = this.options;
 
-    for (const waypoint of this.route.inputWaypoints.filter((waypoint) => waypoint.latLng)) {
-      waypointLatLng = waypoint.latLng!;
+    for (const waypoint of this.route.inputWaypoints) {
+      if (!waypoint.latLng) {
+        continue;
+      }
       const currentIndex = this.route.inputWaypoints.indexOf(waypoint);
-      routeCoordinates = L.latLng(this.route.coordinates[waypointIndices[currentIndex]]);
-      if (waypointLatLng.distanceTo(routeCoordinates) > missingRouteTolerance) {
-        this.addSegment([waypointLatLng, routeCoordinates], missingRouteStyles);
+      const routeCoordinates = L.latLng(
+        this.route.coordinates[waypointIndices[currentIndex]],
+      );
+      if (
+        waypoint.latLng.distanceTo(routeCoordinates) > missingRouteTolerance
+      ) {
+        this.addSegment(
+          [waypoint.latLng, routeCoordinates],
+          missingRouteStyles,
+        );
       }
     }
   }
 
-  addSegment(coords: L.LatLng[], styles: L.PathOptions[], mouselistener?: boolean) {
+  addSegment(
+    coords: L.LatLng[],
+    styles: L.PathOptions[],
+    mouselistener?: boolean,
+  ) {
     for (const style of styles) {
       const polyline = L.polyline(coords, style);
       this.addLayer(polyline);
@@ -156,17 +169,20 @@ export default class Line extends L.LayerGroup {
   }
 
   onLineTouched(e: L.LeafletMouseEvent) {
-    const afterIndex = this.findNearestWaypointBefore(this.findClosestRoutePoint(e.latlng));
+    const afterIndex = this.findNearestWaypointBefore(
+      this.findClosestRoutePoint(e.latlng),
+    );
     this.fire('linetouched', {
       afterIndex: afterIndex,
-      latlng: e.latlng
+      latlng: e.latlng,
     });
     L.DomEvent.stop(e);
   }
 
   getWaypointIndices() {
     if (!this.waypointIndices.length) {
-      this.waypointIndices = this.route.waypointIndices || this.findWaypointIndices();
+      this.waypointIndices =
+        this.route.waypointIndices || this.findWaypointIndices();
     }
 
     return this.waypointIndices;

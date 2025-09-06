@@ -13,19 +13,4 @@ import sk from './sk';
 import sv from './sv';
 import uk from './uk';
 
-export {
-  ca,
-  de,
-  el,
-  en,
-  es,
-  fr,
-  it,
-  nl,
-  pl,
-  pt,
-  ru,
-  sk,
-  sv,
-  uk,
-};
+export { ca, de, el, en, es, fr, it, nl, pl, pt, ru, sk, sv, uk };

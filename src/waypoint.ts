@@ -13,13 +13,17 @@ interface WaypointOptions {
  */
 export default class Waypoint extends L.Class {
   options: WaypointOptions = {
-    allowUTurn: false
-  }
+    allowUTurn: false,
+  };
 
   latLng: L.LatLng | null;
   name?: string;
 
-  constructor(latLng?: L.LatLngExpression, name?: string, options?: WaypointOptions) {
+  constructor(
+    latLng?: L.LatLngExpression,
+    name?: string,
+    options?: WaypointOptions,
+  ) {
     super();
 
     this.options = {
@@ -35,6 +39,10 @@ export default class Waypoint extends L.Class {
 /**
  * Utility function to create a new waypoint
  */
-export function waypoint(latLng?: L.LatLngExpression, name?: string, options?: WaypointOptions) {
+export function waypoint(
+  latLng?: L.LatLngExpression,
+  name?: string,
+  options?: WaypointOptions,
+) {
   return new Waypoint(latLng, name, options);
 }

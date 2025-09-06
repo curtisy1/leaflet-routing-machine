@@ -1,6 +1,6 @@
 import L from 'leaflet';
-import { RoutingErrorEvent } from './common/types';
-import Control from './control';
+import type { RoutingErrorEvent } from './common/types';
+import type Control from './control';
 
 interface Error {
   message: string;
@@ -21,8 +21,8 @@ export default class ErrorControl extends L.Control {
       } else {
         return `The route could not be calculated. ${error.message}`;
       }
-    }
-  }
+    },
+  };
 
   options: ErrorControlOptions = this.defaultOptions;
 
@@ -40,7 +40,8 @@ export default class ErrorControl extends L.Control {
     routingControl
       .on('routingerror', (e: RoutingErrorEvent) => {
         if (this.element) {
-          const formatter = this.options.formatMessage ?? this.defaultOptions.formatMessage;
+          const formatter =
+            this.options.formatMessage ?? this.defaultOptions.formatMessage;
           this.element.children[1].innerHTML = formatter(e.error);
           this.element.style.visibility = 'visible';
         }
@@ -69,6 +70,9 @@ export default class ErrorControl extends L.Control {
   }
 }
 
-export function errorControl(routingControl: Control, options?: ErrorControlOptions) {
+export function errorControl(
+  routingControl: Control,
+  options?: ErrorControlOptions,
+) {
   return new ErrorControl(routingControl, options);
 }

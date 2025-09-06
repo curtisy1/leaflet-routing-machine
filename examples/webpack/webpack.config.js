@@ -1,15 +1,13 @@
-/* eslint-env node */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const path = require('path');
+const path = require('node:path');
 
 module.exports = {
   mode: 'development',
   entry: {
-    leaflet: './index.js'
+    leaflet: './index.js',
   },
   output: {
-    publicPath: ''
+    publicPath: '',
   },
   plugins: [new MiniCssExtractPlugin()],
 
@@ -17,13 +15,13 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(png|gif)$/,
-        use: ['file-loader']
-      }
-    ]
+        use: ['file-loader'],
+      },
+    ],
   },
   resolve: {
     alias: {

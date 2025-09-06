@@ -1,5 +1,8 @@
 import L from 'leaflet';
-import { GeocodingResult, GeocodingCallback } from 'leaflet-control-geocoder/dist/geocoders/api';
+import type {
+  GeocodingResult,
+  GeocodingCallback,
+} from 'leaflet-control-geocoder/dist/geocoders/api';
 
 type GeocoderQuery = (query: string, callback: GeocodingCallback) => void;
 
@@ -56,11 +59,15 @@ export default class Autocomplete {
   private lastCompletedText = '';
   private selection?: Element | null = null;
 
-  constructor(element: HTMLInputElement, callback: (result: GeocodingResult) => void | Promise<void>, options?: AutocompleteOptions) {
+  constructor(
+    element: HTMLInputElement,
+    callback: (result: GeocodingResult) => void | Promise<void>,
+    options?: AutocompleteOptions,
+  ) {
     this.options = {
       ...this.defaultOptions,
       ...options,
-    }
+    };
 
     this.element = element;
     this.resultFn = options?.resultFn;
@@ -76,24 +83,32 @@ export default class Autocomplete {
     L.DomEvent.addListener(this.element, 'input', this.keyPressed, this);
     L.DomEvent.addListener(this.element, 'keypress', this.keyPressed, this);
     L.DomEvent.addListener(this.element, 'keydown', this.keyDown, this);
-    L.DomEvent.addListener(this.element, 'blur', () => {
-      if (this.isOpen) {
-        this.close();
-      }
-    }, this);
+    L.DomEvent.addListener(
+      this.element,
+      'blur',
+      () => {
+        if (this.isOpen) {
+          this.close();
+        }
+      },
+      this,
+    );
   }
 
   close() {
-    L.DomUtil.removeClass(this.container, 'leaflet-routing-geocoder-result-open');
+    L.DomUtil.removeClass(
+      this.container,
+      'leaflet-routing-geocoder-result-open',
+    );
     this.isOpen = false;
   }
 
   open() {
     const rect = this.element.getBoundingClientRect();
     if (!this.container.parentElement) {
-      this.container.style.left = `${(rect.left + window.scrollX)}px`;
-      this.container.style.top = `${(rect.bottom + window.scrollY)}px`;
-      this.container.style.width = `${(rect.right - rect.left)}px`;
+      this.container.style.left = `${rect.left + window.scrollX}px`;
+      this.container.style.top = `${rect.bottom + window.scrollY}px`;
+      this.container.style.width = `${rect.right - rect.left}px`;
       document.body.appendChild(this.container);
     }
 
@@ -123,13 +138,27 @@ export default class Autocomplete {
       // mousedown + click because:
       // http://stackoverflow.com/questions/10652852/jquery-fire-click-before-blur-event
       L.DomEvent.addListener(td, 'mousedown', L.DomEvent.preventDefault, this);
-      L.DomEvent.addListener(td, 'click', () => this.createClickListener(result), this);
+      L.DomEvent.addListener(
+        td,
+        'click',
+        () => this.createClickListener(result),
+        this,
+      );
     }
 
     if (!results.length) {
-      const tr = L.DomUtil.create('tr', 'leaflet-routing-geocoder-no-results-row', this.resultTable);
-      const td = L.DomUtil.create('td', 'leaflet-routing-geocoder-no-results', tr);
-      td.innerHTML = this.options.noResultsMessage ?? this.defaultOptions.noResultsMessage;
+      const tr = L.DomUtil.create(
+        'tr',
+        'leaflet-routing-geocoder-no-results-row',
+        this.resultTable,
+      );
+      const td = L.DomUtil.create(
+        'td',
+        'leaflet-routing-geocoder-no-results',
+        tr,
+      );
+      td.innerHTML =
+        this.options.noResultsMessage ?? this.defaultOptions.noResultsMessage;
     }
 
     this.open();
@@ -152,9 +181,12 @@ export default class Autocomplete {
   }
 
   keyPressed(e: Event) {
-    const { keyCode } = e as KeyboardEvent
+    const { keyCode } = e as KeyboardEvent;
     if (this.isOpen && keyCode === 13 && this.selection) {
-      const index = parseInt(this.selection.getAttribute('data-result-index') ?? '0', 10);
+      const index = parseInt(
+        this.selection.getAttribute('data-result-index') ?? '0',
+        10,
+      );
       this.resultSelected(this.results[index]);
       L.DomEvent.preventDefault(e);
       return;
@@ -166,7 +198,10 @@ export default class Autocomplete {
       }
 
       L.DomEvent.preventDefault(e);
-      this.complete((query, callback) => this.resultFn?.(query, callback), true);
+      this.complete(
+        (query, callback) => this.resultFn?.(query, callback),
+        true,
+      );
       return;
     }
 
@@ -175,8 +210,10 @@ export default class Autocomplete {
         clearTimeout(this.timer);
       }
 
-      this.timer = window.setTimeout(() => this.complete(this.autocomplete),
-        this.options.timeout);
+      this.timer = window.setTimeout(
+        () => this.complete(this.autocomplete),
+        this.options.timeout,
+      );
       return;
     }
 
@@ -186,22 +223,33 @@ export default class Autocomplete {
   select(dir: number) {
     let selection = this.selection;
     if (selection) {
-      L.DomUtil.removeClass(selection as HTMLElement, 'leaflet-routing-geocoder-selected');
-      selection = selection[dir > 0 ? 'nextElementSibling' : 'previousElementSibling'];
+      L.DomUtil.removeClass(
+        selection as HTMLElement,
+        'leaflet-routing-geocoder-selected',
+      );
+      selection =
+        selection[dir > 0 ? 'nextElementSibling' : 'previousElementSibling'];
     }
     if (!selection) {
-      selection = this.resultTable[dir > 0 ? 'firstElementChild' : 'lastElementChild'];
+      selection =
+        this.resultTable[dir > 0 ? 'firstElementChild' : 'lastElementChild'];
     }
 
     if (selection) {
-      L.DomUtil.addClass(selection as HTMLElement, 'leaflet-routing-geocoder-selected');
+      L.DomUtil.addClass(
+        selection as HTMLElement,
+        'leaflet-routing-geocoder-selected',
+      );
       this.selection = selection;
     }
   }
 
   unselect() {
     if (this.selection) {
-      L.DomUtil.removeClass(this.selection as HTMLElement, 'leaflet-routing-geocoder-selected');
+      L.DomUtil.removeClass(
+        this.selection as HTMLElement,
+        'leaflet-routing-geocoder-selected',
+      );
     }
 
     delete this.selection;
@@ -211,17 +259,17 @@ export default class Autocomplete {
     const { keyCode } = e as KeyboardEvent;
     if (this.isOpen) {
       switch (keyCode) {
-      // Escape
+        // Escape
         case 27:
           this.close();
           L.DomEvent.preventDefault(e);
           return;
-          // Up
+        // Up
         case 38:
           this.select(-1);
           L.DomEvent.preventDefault(e);
           return;
-          // Down
+        // Down
         case 40:
           this.select(1);
           L.DomEvent.preventDefault(e);
@@ -254,6 +302,10 @@ export default class Autocomplete {
   }
 }
 
-export function autocomplete(element: HTMLInputElement, callback: (result: GeocodingResult) => void | Promise<void>, options?: AutocompleteOptions) {
+export function autocomplete(
+  element: HTMLInputElement,
+  callback: (result: GeocodingResult) => void | Promise<void>,
+  options?: AutocompleteOptions,
+) {
   return new Autocomplete(element, callback, options);
 }

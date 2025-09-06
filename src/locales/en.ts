@@ -1,4 +1,4 @@
-import { Locale } from './types';
+import type { Locale } from './types';
 
 const enLocale: Locale = {
   directions: {
@@ -16,39 +16,33 @@ const enLocale: Locale = {
     SlightLeft: 'slight left',
     Left: 'left',
     SharpLeft: 'sharp left',
-    Uturn: 'Turn around'
+    Uturn: 'Turn around',
   },
   instructions: {
     // instruction, postfix if the road is named
-    'Head':
-      ['Head {dir}', ' on {road}'],
-    'Continue':
-      ['Continue {dir}'],
-    'TurnAround':
-      ['Turn around'],
-    'WaypointReached':
-      ['Waypoint reached'],
-    'Roundabout':
-      ['Take the {exitStr} exit in the roundabout', ' onto {road}'],
-    'DestinationReached':
-      ['Destination reached'],
-    'Fork': ['At the fork, turn {modifier}', ' onto {road}'],
-    'Merge': ['Merge {modifier}', ' onto {road}'],
-    'OnRamp': ['Turn {modifier} on the ramp', ' onto {road}'],
-    'OffRamp': ['Take the ramp on the {modifier}', ' onto {road}'],
-    'EndOfRoad': ['Turn {modifier} at the end of the road', ' onto {road}'],
-    'Onto': 'onto {road}'
+    Head: ['Head {dir}', ' on {road}'],
+    Continue: ['Continue {dir}'],
+    TurnAround: ['Turn around'],
+    WaypointReached: ['Waypoint reached'],
+    Roundabout: ['Take the {exitStr} exit in the roundabout', ' onto {road}'],
+    DestinationReached: ['Destination reached'],
+    Fork: ['At the fork, turn {modifier}', ' onto {road}'],
+    Merge: ['Merge {modifier}', ' onto {road}'],
+    OnRamp: ['Turn {modifier} on the ramp', ' onto {road}'],
+    OffRamp: ['Take the ramp on the {modifier}', ' onto {road}'],
+    EndOfRoad: ['Turn {modifier} at the end of the road', ' onto {road}'],
+    Onto: 'onto {road}',
   },
-  formatOrder: function (n) {
-    const i = n % 10 - 1;
+  formatOrder: (n) => {
+    const i = (n % 10) - 1;
     const suffix = ['st', 'nd', 'rd'];
 
-    return suffix[i] ? n + suffix[i] : n + 'th';
+    return suffix[i] ? n + suffix[i] : `${n}th`;
   },
   ui: {
     startPlaceholder: 'Start',
     viaPlaceholder: 'Via {viaNumber}',
-    endPlaceholder: 'End'
+    endPlaceholder: 'End',
   },
   units: {
     meters: 'm',
@@ -57,8 +51,8 @@ const enLocale: Locale = {
     miles: 'mi',
     hours: 'h',
     minutes: 'min',
-    seconds: 's'
-  }
-}
+    seconds: 's',
+  },
+};
 
 export default enLocale;

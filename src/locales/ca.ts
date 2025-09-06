@@ -1,4 +1,4 @@
-import { Locale } from './types';
+import type { Locale } from './types';
 
 const caLocale: Locale = {
   directions: {
@@ -13,38 +13,30 @@ const caLocale: Locale = {
     SlightRight: 'lleu gir a la dreta',
     Right: 'dreta',
     SharpRight: 'gir pronunciat a la dreta',
-    SlightLeft: 'gir pronunciat a l\'esquerra',
+    SlightLeft: "gir pronunciat a l'esquerra",
     Left: 'esquerra',
-    SharpLeft: 'lleu gir a l\'esquerra',
-    Uturn: 'mitja volta'
+    SharpLeft: "lleu gir a l'esquerra",
+    Uturn: 'mitja volta',
   },
   instructions: {
-    'Head':
-      ['Recte {dir}', ' sobre {road}'],
-    'Continue':
-      ['Continuar {dir}'],
-    'TurnAround':
-      ['Donar la volta'],
-    'WaypointReached':
-      ['Ha arribat a un punt del camí'],
-    'Roundabout':
-      ['Agafar {exitStr} sortida a la rotonda', ' a {road}'],
-    'DestinationReached':
-      ['Arribada al destí'],
-    'Fork': ['A la cruïlla gira a la {modifier}', ' cap a {road}'],
-    'Merge': ['Incorpora\'t {modifier}', ' a {road}'],
-    'OnRamp': ['Gira {modifier} a la sortida', ' cap a {road}'],
-    'OffRamp': ['Pren la sortida {modifier}', ' cap a {road}'],
-    'EndOfRoad': ['Gira {modifier} al final de la carretera', ' cap a {road}'],
-    'Onto': 'cap a {road}'
+    Head: ['Recte {dir}', ' sobre {road}'],
+    Continue: ['Continuar {dir}'],
+    TurnAround: ['Donar la volta'],
+    WaypointReached: ['Ha arribat a un punt del camí'],
+    Roundabout: ['Agafar {exitStr} sortida a la rotonda', ' a {road}'],
+    DestinationReached: ['Arribada al destí'],
+    Fork: ['A la cruïlla gira a la {modifier}', ' cap a {road}'],
+    Merge: ["Incorpora't {modifier}", ' a {road}'],
+    OnRamp: ['Gira {modifier} a la sortida', ' cap a {road}'],
+    OffRamp: ['Pren la sortida {modifier}', ' cap a {road}'],
+    EndOfRoad: ['Gira {modifier} al final de la carretera', ' cap a {road}'],
+    Onto: 'cap a {road}',
   },
-  formatOrder: function (n) {
-    return n + 'º';
-  },
+  formatOrder: (n) => `${n}º`,
   ui: {
     startPlaceholder: 'Origen',
     viaPlaceholder: 'Via {viaNumber}',
-    endPlaceholder: 'Destí'
+    endPlaceholder: 'Destí',
   },
   units: {
     meters: 'm',
@@ -53,8 +45,8 @@ const caLocale: Locale = {
     miles: 'mi',
     hours: 'h',
     minutes: 'min',
-    seconds: 's'
-  }
+    seconds: 's',
+  },
 };
 
 export default caLocale;

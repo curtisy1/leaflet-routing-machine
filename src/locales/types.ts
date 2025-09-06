@@ -1,38 +1,16 @@
-interface TurnDirections {
-  SlightRight?: string | string[];
-  SlightLeft?: string | string[];
-  SharpRight?: string | string[];
-  SharpLeft?: string | string[];
-  Right?: string | string[];
-  Left?: string | string[];
-  Uturn?: string | string[];
-}
+import type {
+  Direction,
+  InstructionModifier,
+  InstructionType,
+} from '../common/types';
 
-interface Directions extends TurnDirections {
-  N: string;
-  NE: string;
-  E: string;
-  SE: string;
-  S: string;
-  SW: string;
-  W: string;
-  NW: string;
-}
+type TurnDirections = { [key in InstructionModifier]?: string | string[] };
 
-interface Instructions extends TurnDirections {
-  Head?: string[];
-  Continue?: string[];
-  TurnAround?: string[];
-  WaypointReached?: string[];
-  Roundabout?: string[];
-  DestinationReached?: string[];
-  Fork?: string[];
-  Merge?: string[];
-  OnRamp?: string[];
-  OffRamp?: string[];
-  EndOfRoad?: string[];
-  Onto?: string;
-}
+type Directions = { [key in InstructionModifier | Direction]?: string };
+
+export type Instructions = TurnDirections & {
+  [key in InstructionType]?: string | string[];
+};
 
 interface UI {
   startPlaceholder: string;
@@ -53,7 +31,7 @@ export interface Units {
 export interface Locale {
   directions: Directions;
   instructions: Instructions;
-  formatOrder: (n: number) => string,
+  formatOrder: (n: number) => string;
   ui: UI;
   units?: Units;
 }

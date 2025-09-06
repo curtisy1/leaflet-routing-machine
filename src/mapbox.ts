@@ -1,4 +1,4 @@
-import OSRMv1, { OSRMv1Options } from './osrm-v1';
+import OSRMv1, { type OSRMv1Options } from './osrm-v1';
 
 export default class Mapbox extends OSRMv1 {
   options: OSRMv1Options = {
@@ -6,7 +6,7 @@ export default class Mapbox extends OSRMv1 {
     profile: 'mapbox/driving',
     useHints: false,
     requestParameters: {},
-  }
+  };
 
   constructor(accessToken: string, options?: OSRMv1Options) {
     super(options);

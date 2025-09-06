@@ -1,4 +1,4 @@
-import { Locale } from './types';
+import type { Locale } from './types';
 
 const esLocale: Locale = {
   directions: {
@@ -16,36 +16,28 @@ const esLocale: Locale = {
     SlightLeft: 'leve giro a la izquierda',
     Left: 'izquierda',
     SharpLeft: 'giro pronunciado a la izquierda',
-    Uturn: 'media vuelta'
+    Uturn: 'media vuelta',
   },
   instructions: {
     // instruction, postfix if the road is named
-    'Head':
-      ['Derecho {dir}', ' sobre {road}'],
-    'Continue':
-      ['Continuar {dir}', ' en {road}'],
-    'TurnAround':
-      ['Dar vuelta'],
-    'WaypointReached':
-      ['Llegó a un punto del camino'],
-    'Roundabout':
-      ['Tomar {exitStr} salida en la rotonda', ' en {road}'],
-    'DestinationReached':
-      ['Llegada a destino'],
-    'Fork': ['En el cruce gira a {modifier}', ' hacia {road}'],
-    'Merge': ['Incorpórate {modifier}', ' hacia {road}'],
-    'OnRamp': ['Gira {modifier} en la salida', ' hacia {road}'],
-    'OffRamp': ['Toma la salida {modifier}', ' hacia {road}'],
-    'EndOfRoad': ['Gira {modifier} al final de la carretera', ' hacia {road}'],
-    'Onto': 'hacia {road}'
+    Head: ['Derecho {dir}', ' sobre {road}'],
+    Continue: ['Continuar {dir}', ' en {road}'],
+    TurnAround: ['Dar vuelta'],
+    WaypointReached: ['Llegó a un punto del camino'],
+    Roundabout: ['Tomar {exitStr} salida en la rotonda', ' en {road}'],
+    DestinationReached: ['Llegada a destino'],
+    Fork: ['En el cruce gira a {modifier}', ' hacia {road}'],
+    Merge: ['Incorpórate {modifier}', ' hacia {road}'],
+    OnRamp: ['Gira {modifier} en la salida', ' hacia {road}'],
+    OffRamp: ['Toma la salida {modifier}', ' hacia {road}'],
+    EndOfRoad: ['Gira {modifier} al final de la carretera', ' hacia {road}'],
+    Onto: 'hacia {road}',
   },
-  formatOrder: function (n) {
-    return n + 'º';
-  },
+  formatOrder: (n) => `${n}º`,
   ui: {
     startPlaceholder: 'Inicio',
     viaPlaceholder: 'Via {viaNumber}',
-    endPlaceholder: 'Destino'
+    endPlaceholder: 'Destino',
   },
   units: {
     meters: 'm',
@@ -54,8 +46,8 @@ const esLocale: Locale = {
     miles: 'mi',
     hours: 'h',
     minutes: 'min',
-    seconds: 's'
-  }
+    seconds: 's',
+  },
 };
 
 export default esLocale;

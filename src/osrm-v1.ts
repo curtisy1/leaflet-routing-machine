@@ -1,7 +1,15 @@
 import L from 'leaflet';
 import { decode } from '@googlemaps/polyline-codec';
 import Waypoint from './waypoint';
-import { Direction, RoutingOptions, IRouter, IRoute, IRoutingError, InstructionType } from './common/types';
+import {
+  Direction,
+  type RoutingOptions,
+  type IRouter,
+  type IRoute,
+  type IRoutingError,
+  InstructionType,
+  type InstructionModifier,
+} from './common/types';
 
 export interface OSRMv1Options {
   /**
@@ -32,8 +40,12 @@ export interface OSRMv1Options {
   useHints?: boolean;
   suppressDemoServerWarning?: boolean;
   language?: string;
-  requestParameters?: any;
-  stepToText?: (language: string | undefined, step: OSRMStep, properties: { legCount: number, legIndex: number }) => string;
+  requestParameters?: Record<string, unknown>;
+  stepToText?: (
+    language: string | undefined,
+    step: OSRMStep,
+    properties: { legCount: number; legIndex: number },
+  ) => string;
 }
 
 interface OSRMWaypoint {
@@ -107,7 +119,7 @@ export default class OSRMv1 extends L.Class implements IRouter {
     timeout: 30 * 1000,
     routingOptions: {
       alternatives: true,
-      steps: true
+      steps: true,
     },
     polylinePrecision: 5,
     useHints: true,
@@ -130,26 +142,34 @@ export default class OSRMv1 extends L.Class implements IRouter {
     };
 
     this.hints = {
-      locations: {}
+      locations: {},
     };
 
-    if (!this.options.suppressDemoServerWarning &&
-      (this.options.serviceUrl?.indexOf('//router.project-osrm.org') ?? 0) >= 0) {
-      console.warn('You are using OSRM\'s demo server. ' +
-        'Please note that it is **NOT SUITABLE FOR PRODUCTION USE**.\n' +
-        'Refer to the demo server\'s usage policy: ' +
-        'https://github.com/Project-OSRM/osrm-backend/wiki/Api-usage-policy\n\n' +
-        'To change, set the serviceUrl option.\n\n' +
-        'Please do not report issues with this server to neither ' +
-        'Leaflet Routing Machine or OSRM - it\'s for\n' +
-        'demo only, and will sometimes not be available, or work in ' +
-        'unexpected ways.\n\n' +
-        'Please set up your own OSRM server, or use a paid service ' +
-        'provider for production.');
+    if (
+      !this.options.suppressDemoServerWarning &&
+      (this.options.serviceUrl?.indexOf('//router.project-osrm.org') ?? 0) >= 0
+    ) {
+      console.warn(
+        "You are using OSRM's demo server. " +
+          'Please note that it is **NOT SUITABLE FOR PRODUCTION USE**.\n' +
+          "Refer to the demo server's usage policy: " +
+          'https://github.com/Project-OSRM/osrm-backend/wiki/Api-usage-policy\n\n' +
+          'To change, set the serviceUrl option.\n\n' +
+          'Please do not report issues with this server to neither ' +
+          "Leaflet Routing Machine or OSRM - it's for\n" +
+          'demo only, and will sometimes not be available, or work in ' +
+          'unexpected ways.\n\n' +
+          'Please set up your own OSRM server, or use a paid service ' +
+          'provider for production.',
+      );
     }
   }
 
-  async route(waypoints: Waypoint[], options?: RoutingOptions, abortController?: AbortController) {
+  async route(
+    waypoints: Waypoint[],
+    options?: RoutingOptions,
+    abortController?: AbortController,
+  ) {
     const routingOptions = { ...this.options.routingOptions, ...options };
     let url = this.buildRouteUrl(waypoints, routingOptions);
     if (this.options.requestParameters) {
@@ -174,7 +194,9 @@ export default class OSRMv1 extends L.Class implements IRouter {
       const timeout = this.options.timeout ?? this.defaultOptions.timeout;
       const response = await Promise.race([
         request,
-        new Promise<undefined>((_, reject) => window.setTimeout(() => reject(new Error('timeout')), timeout))
+        new Promise<undefined>((_, reject) =>
+          window.setTimeout(() => reject(new Error('timeout')), timeout),
+        ),
       ]);
 
       if (response?.ok) {
@@ -190,29 +212,34 @@ export default class OSRMv1 extends L.Class implements IRouter {
 
           try {
             return this.routeDone(data, wps, routingOptions);
+            // biome-ignore lint/suspicious/noExplicitAny: any is allowed for error types in catch
           } catch (ex: any) {
             error.status = -3;
             error.message = ex.toString();
           }
+          // biome-ignore lint/suspicious/noExplicitAny: any is allowed for error types in catch
         } catch (ex: any) {
           error.status = -2;
-          error.message = 'Error parsing OSRM response: ' + ex.toString();
+          error.message = `Error parsing OSRM response: ${ex.toString()}`;
         }
       } else {
         throw {
-          target: request
-        }
+          target: request,
+        };
       }
+      // biome-ignore lint/suspicious/noExplicitAny: any is allowed for error types in catch
     } catch (err: any) {
       if (err.name === 'AbortError' || err.message === 'timeout') {
         throw {
           type: 'abort',
           status: -1,
-          message: 'OSRM request timed out.'
+          message: 'OSRM request timed out.',
         };
       }
 
-      const errorStatus = (err.target?.status ? ` HTTP ${err.target.status}: ${err.target.statusText}` : '');
+      const errorStatus = err.target?.status
+        ? ` HTTP ${err.target.status}: ${err.target.statusText}`
+        : '';
       let message = `${err.type}${errorStatus}`;
       if (err.responseText) {
         try {
@@ -220,12 +247,12 @@ export default class OSRMv1 extends L.Class implements IRouter {
           if (data.message) {
             message = data.message;
           }
-        } catch (ex) {
+        } catch {
           message = 'Error parsing error response';
         }
       }
 
-      error.message = 'HTTP request failed: ' + message;
+      error.message = `HTTP request failed: ${message}`;
       error.url = url;
       error.status = -1;
       error.target = err;
@@ -234,21 +261,34 @@ export default class OSRMv1 extends L.Class implements IRouter {
     throw error;
   }
 
-  requiresMoreDetail(route: IRoute, zoom: number, bounds: L.LatLngBounds) {
+  requiresMoreDetail(route: IRoute, _zoom: number, bounds: L.LatLngBounds) {
     if (!route.properties.isSimplified) {
       return false;
     }
 
     return route.inputWaypoints
       .filter((waypoint) => waypoint.latLng)
-      .some((waypoint) => !bounds.contains(waypoint.latLng!));
+      .some((waypoint) => !bounds.contains(waypoint.latLng as L.LatLng));
   }
 
-  private routeDone(response: OSRMResult, inputWaypoints: Waypoint[], options?: RoutingOptions) {
-    const actualWaypoints = this.toWaypoints(inputWaypoints, response.waypoints);
+  private routeDone(
+    response: OSRMResult,
+    inputWaypoints: Waypoint[],
+    options?: RoutingOptions,
+  ) {
+    const actualWaypoints = this.toWaypoints(
+      inputWaypoints,
+      response.waypoints,
+    );
     const alts = response.routes.map((route) => {
-      const isSimplified = (!options?.geometryOnly || options?.simplifyGeometry) ?? false;
-      return this.convertRoute(route, inputWaypoints, actualWaypoints, isSimplified);
+      const isSimplified =
+        (!options?.geometryOnly || options?.simplifyGeometry) ?? false;
+      return this.convertRoute(
+        route,
+        inputWaypoints,
+        actualWaypoints,
+        isSimplified,
+      );
     });
 
     this.saveHintData(response.waypoints, inputWaypoints);
@@ -256,25 +296,31 @@ export default class OSRMv1 extends L.Class implements IRouter {
     return alts;
   }
 
-  private convertRoute(responseRoute: OSRMRoute, inputWaypoints: Waypoint[], actualWaypoints: Waypoint[], isSimplified: boolean) {
+  private convertRoute(
+    responseRoute: OSRMRoute,
+    inputWaypoints: Waypoint[],
+    actualWaypoints: Waypoint[],
+    isSimplified: boolean,
+  ) {
     const result: IRoute = {
       name: '',
       coordinates: [],
       instructions: [],
       summary: {
         totalDistance: responseRoute.distance,
-        totalTime: responseRoute.duration
+        totalTime: responseRoute.duration,
       },
       inputWaypoints,
       waypoints: actualWaypoints,
       properties: {
-        isSimplified
+        isSimplified,
       },
       waypointIndices: [],
-      routesIndex: 0
+      routesIndex: 0,
     };
 
-    const { language = this.defaultOptions.language, stepToText } = this.options;
+    const { language = this.defaultOptions.language, stepToText } =
+      this.options;
     const legNames: string[] = [];
     const waypointIndices: number[] = [];
     const legCount = responseRoute.legs.length;
@@ -283,7 +329,9 @@ export default class OSRMv1 extends L.Class implements IRouter {
 
     for (const leg of responseRoute.legs) {
       if (leg.summary) {
-        legNames.push(leg.summary.charAt(0).toUpperCase() + leg.summary.substring(1));
+        legNames.push(
+          leg.summary.charAt(0).toUpperCase() + leg.summary.substring(1),
+        );
       }
 
       for (const step of leg.steps) {
@@ -291,7 +339,10 @@ export default class OSRMv1 extends L.Class implements IRouter {
         result.coordinates.push(...geometry);
 
         const legIndex = leg.steps.indexOf(step);
-        const type = this.maneuverToInstructionType(step.maneuver, legIndex === legCount - 1);
+        const type = this.maneuverToInstructionType(
+          step.maneuver,
+          legIndex === legCount - 1,
+        );
         const modifier = this.maneuverToModifier(step.maneuver);
         let text = '';
 
@@ -300,7 +351,10 @@ export default class OSRMv1 extends L.Class implements IRouter {
         }
 
         if (type) {
-          if ((legIndex == 0 && step.maneuver.type == 'depart') || step.maneuver.type == 'arrive') {
+          if (
+            (legIndex === 0 && step.maneuver.type === 'depart') ||
+            step.maneuver.type === 'arrive'
+          ) {
             waypointIndices.push(index);
           }
 
@@ -314,7 +368,7 @@ export default class OSRMv1 extends L.Class implements IRouter {
             index,
             mode: step.mode,
             modifier,
-            text
+            text,
           });
         }
 
@@ -334,7 +388,16 @@ export default class OSRMv1 extends L.Class implements IRouter {
 
   private bearingToDirection(bearing: number) {
     const oct = Math.round(bearing / 45) % 8;
-    return [Direction.N, Direction.NE, Direction.E, Direction.SE, Direction.S, Direction.SW, Direction.W, Direction.NW][oct];
+    return [
+      Direction.N,
+      Direction.NE,
+      Direction.E,
+      Direction.SE,
+      Direction.S,
+      Direction.SW,
+      Direction.W,
+      Direction.NW,
+    ][oct];
   }
 
   private maneuverToInstructionType(maneuver: OSRMManeuver, lastLeg: boolean) {
@@ -344,7 +407,9 @@ export default class OSRMv1 extends L.Class implements IRouter {
       case 'depart':
         return InstructionType.Head;
       case 'arrive':
-        return lastLeg ? InstructionType.DestinationReached : InstructionType.WaypointReached;
+        return lastLeg
+          ? InstructionType.DestinationReached
+          : InstructionType.WaypointReached;
       case 'roundabout':
       case 'rotary':
         return InstructionType.Roundabout;
@@ -354,15 +419,15 @@ export default class OSRMv1 extends L.Class implements IRouter {
       case 'off ramp':
       case 'end of road':
         return this.camelCase(maneuver.type) as InstructionType;
-        // These are all reduced to the same instruction in the current model
-        //case 'turn':
-        //case 'ramp': // deprecated in v5.1
+      // These are all reduced to the same instruction in the current model
+      //case 'turn':
+      //case 'ramp': // deprecated in v5.1
       default:
         return this.camelCase(maneuver.modifier) as InstructionType;
     }
   }
 
-  private maneuverToModifier(maneuver: OSRMManeuver): InstructionType {
+  private maneuverToModifier(maneuver: OSRMManeuver): InstructionModifier {
     let modifier = maneuver.modifier;
 
     switch (maneuver.type) {
@@ -374,7 +439,7 @@ export default class OSRMv1 extends L.Class implements IRouter {
         modifier = this.leftOrRight(modifier);
     }
 
-    return modifier && this.camelCase(modifier) as InstructionType;
+    return modifier && (this.camelCase(modifier) as InstructionModifier);
   }
 
   private camelCase(s: string) {
@@ -388,11 +453,16 @@ export default class OSRMv1 extends L.Class implements IRouter {
   }
 
   private leftOrRight(d: string) {
-    return d.indexOf('left') >= 0 ? InstructionType.Left : InstructionType.Right;
+    return d.indexOf('left') >= 0
+      ? InstructionType.Left
+      : InstructionType.Right;
   }
 
   private decodePolyline(routeGeometry: string) {
-    const line = decode(routeGeometry, this.options.polylinePrecision) as [number, number][];
+    const line = decode(routeGeometry, this.options.polylinePrecision) as [
+      number,
+      number,
+    ][];
     return line.map((l) => L.latLng(l));
   }
 
@@ -413,17 +483,27 @@ export default class OSRMv1 extends L.Class implements IRouter {
     const hints: string[] = [];
 
     for (const waypoint of waypoints.filter((waypoint) => waypoint.latLng)) {
-      const locationKey = this.locationKey(waypoint.latLng!);
+      const locationKey = this.locationKey(waypoint.latLng as L.LatLng);
       locations.push(locationKey);
       hints.push(this.hints.locations[locationKey] || '');
     }
 
     const { serviceUrl, profile, useHints } = this.options;
-    const { simplifyGeometry = false, geometryOnly = false, allowUTurns = false } = options ?? {};
+    const {
+      simplifyGeometry = false,
+      geometryOnly = false,
+      allowUTurns = false,
+    } = options ?? {};
 
-    const overviewParam = (geometryOnly ? (simplifyGeometry ? '' : 'overview=full') : 'overview=false');
-    const useHintsParam = (useHints ? `&hints=${hints.join(';')}` : '');
-    const allowUTurnsParam = (allowUTurns ? `&continue_straight=${!allowUTurns}` : '');
+    const overviewParam = geometryOnly
+      ? simplifyGeometry
+        ? ''
+        : 'overview=full'
+      : 'overview=false';
+    const useHintsParam = useHints ? `&hints=${hints.join(';')}` : '';
+    const allowUTurnsParam = allowUTurns
+      ? `&continue_straight=${!allowUTurns}`
+      : '';
     return `${serviceUrl}/${profile}/${locations.join(';')}?${overviewParam}&alternatives=true&steps=true${useHintsParam}${allowUTurnsParam}`;
   }
 
@@ -433,13 +513,14 @@ export default class OSRMv1 extends L.Class implements IRouter {
 
   private saveHintData(actualWaypoints: OSRMWaypoint[], waypoints: Waypoint[]) {
     this.hints = {
-      locations: {}
+      locations: {},
     };
 
     const validWaypoints = waypoints.filter((waypoint) => waypoint.latLng);
     for (let i = actualWaypoints.length - 1; i >= 0; i--) {
       const { latLng } = validWaypoints[i];
-      this.hints.locations[this.locationKey(latLng!)] = actualWaypoints[i].hint;
+      this.hints.locations[this.locationKey(latLng as L.LatLng)] =
+        actualWaypoints[i].hint;
     }
   }
 }

@@ -1,9 +1,9 @@
 import L from 'leaflet';
-import { IGeocoder } from 'leaflet-control-geocoder/dist/geocoders/api';
-import Autocomplete, { AutocompleteOptions } from './autocomplete';
-import { Locale } from './locales/types';
-import Localization from './localization';
-import Waypoint from './waypoint';
+import type { IGeocoder } from 'leaflet-control-geocoder/dist/geocoders/api';
+import Autocomplete, { type AutocompleteOptions } from './autocomplete';
+import type { Locale } from './locales/types';
+import type Waypoint from './waypoint';
+import { en as enLocale } from './locales';
 
 interface GeocoderElementCollection {
   container: HTMLElement;
@@ -15,29 +15,43 @@ export interface GeocoderElementsOptions extends L.ControlOptions {
   /**
    * Creates a custom instance of AutoComplete for suggestions
    */
-  createAutocomplete?: (geocoderInput: HTMLInputElement, context: GeocoderElement) => Autocomplete;
+  createAutocomplete?: (
+    geocoderInput: HTMLInputElement,
+    context: GeocoderElement,
+  ) => Autocomplete;
   /**
    * Specify options for the default AutoComplete
    */
-  autocompleteOptions?: AutocompleteOptions,
+  autocompleteOptions?: AutocompleteOptions;
   /**
    * Create a geocoder for a waypoint
    */
-  createGeocoder?: (waypointIndex: number, numberOfWaypoints: number, options: GeocoderElementsOptions) => GeocoderElementCollection;
+  createGeocoder?: (
+    waypointIndex: number,
+    numberOfWaypoints: number,
+    options: GeocoderElementsOptions,
+  ) => GeocoderElementCollection;
   /**
    * Function to generate placeholder text for a waypoint geocoder. By default, gives text “Start” for first waypoint, “End” for last, and “Via x” in between
    */
-  geocoderPlaceholder?: (waypointIndex: number, numberOfWaypoints: number, geocoderElement: any) => string;
+  geocoderPlaceholder?: (
+    waypointIndex: number,
+    numberOfWaypoints: number,
+    geocoderElement: GeocoderElement,
+  ) => string;
   /**
    * A function that returns the HTML classname to assign to individual geocoder inputs
    */
-  geocoderClass?: (waypointIndex?: number, numberOfWaypoints?: number) => string;
-  locale?: Locale,
+  geocoderClass?: (
+    waypointIndex?: number,
+    numberOfWaypoints?: number,
+  ) => string;
+  locale?: Locale;
   /**
    * Maximum distance in meters from a reverse geocoding result to a waypoint, to consider the address valid
    * @default 200
    */
-  maxGeocoderTolerance?: number,
+  maxGeocoderTolerance?: number;
   /**
    * When a waypoint’s name can’t be reverse geocoded, this function will be called to generate a name. Default will give a name based on the waypoint’s latitude and longitude.
    */
@@ -49,47 +63,63 @@ export interface GeocoderElementsOptions extends L.ControlOptions {
   addWaypoints?: boolean;
 }
 
-class EventedControl {
-  constructor(...args: any[]) {
-  }
-}
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: Typescript needs this to generate proper js code
+class EventedControl {}
 
-interface EventedControl extends L.Control, L.Evented { }
+// biome-ignore lint/correctness/noUnusedVariables: Typescript needs this to generate proper js code
+interface EventedControl extends L.Control, L.Evented {}
 L.Util.extend(EventedControl.prototype, L.Control.prototype);
 L.Util.extend(EventedControl.prototype, L.Evented.prototype);
 
 export default class GeocoderElement extends EventedControl {
   private readonly defaultOptions = {
-    createAutocomplete: (geocoderInput: HTMLInputElement, context: GeocoderElement) => {
-      return new Autocomplete(geocoderInput, (r) => {
-        geocoderInput.value = r.name;
-        context.waypoint.name = r.name;
-        context.waypoint.latLng = r.center;
-        context.fire('geocoded', { waypoint: context.waypoint, value: r });
-      }, {
-        ...{
-          resultFn: context.options.geocoder?.geocode,
-          autocompleteFn: context.options.geocoder?.suggest,
+    createAutocomplete: (
+      geocoderInput: HTMLInputElement,
+      context: GeocoderElement,
+    ) => {
+      return new Autocomplete(
+        geocoderInput,
+        (r) => {
+          geocoderInput.value = r.name;
+          context.waypoint.name = r.name;
+          context.waypoint.latLng = r.center;
+          context.fire('geocoded', { waypoint: context.waypoint, value: r });
         },
-        ...context.options.autocompleteOptions
-      });
+        {
+          ...{
+            resultFn: context.options.geocoder?.geocode,
+            autocompleteFn: context.options.geocoder?.suggest,
+          },
+          ...context.options.autocompleteOptions,
+        },
+      );
     },
-    createGeocoder: (_: number, numberOfWaypoints: number, options: GeocoderElementsOptions) => {
+    createGeocoder: (
+      _: number,
+      _numberOfWaypoints: number,
+      options: GeocoderElementsOptions,
+    ) => {
       const container = L.DomUtil.create('div', 'leaflet-routing-geocoder');
       const input = L.DomUtil.create('input', '', container);
-      const remove = options.addWaypoints ? L.DomUtil.create('span', 'leaflet-routing-remove-waypoint', container) : undefined;
+      const remove = options.addWaypoints
+        ? L.DomUtil.create('span', 'leaflet-routing-remove-waypoint', container)
+        : undefined;
 
       input.disabled = !options.addWaypoints;
 
       return {
         container: container,
         input: input,
-        closeButton: remove
+        closeButton: remove,
       };
     },
 
-    geocoderPlaceholder: (waypointIndex: number, numberWaypoints: number, geocoderElement: GeocoderElement) => {
-      const l = new Localization(geocoderElement.options.locale).localize('ui');
+    geocoderPlaceholder: (
+      waypointIndex: number,
+      numberWaypoints: number,
+      geocoderElement: GeocoderElement,
+    ) => {
+      const l = (geocoderElement.options.locale ?? enLocale).ui;
 
       if (waypointIndex === 0) {
         return l.startPlaceholder;
@@ -112,7 +142,7 @@ export default class GeocoderElement extends EventedControl {
       const lat = (Math.round(Math.abs(latLng.lat) * 10000) / 10000).toString();
       const lng = (Math.round(Math.abs(latLng.lng) * 10000) / 10000).toString();
 
-      return ns + lat + ', ' + ew + lng;
+      return `${ns + lat}, ${ew}${lng}`;
     },
     maxGeocoderTolerance: 200,
     autocompleteOptions: {},
@@ -124,13 +154,18 @@ export default class GeocoderElement extends EventedControl {
   private element: GeocoderElementCollection;
   private waypoint: Waypoint;
 
-  constructor(waypoint: Waypoint, waypointIndex: number, numberOfWaypoints: number, options?: GeocoderElementsOptions) {
+  constructor(
+    waypoint: Waypoint,
+    waypointIndex: number,
+    numberOfWaypoints: number,
+    options?: GeocoderElementsOptions,
+  ) {
     super();
 
     this.options = {
       ...this.defaultOptions,
       ...options,
-    }
+    };
 
     const {
       createAutocomplete = this.defaultOptions.createAutocomplete,
@@ -139,10 +174,17 @@ export default class GeocoderElement extends EventedControl {
       geocoderClass = this.defaultOptions.geocoderClass,
     } = this.options;
 
-    const geocoder = createGeocoder(waypointIndex, numberOfWaypoints, this.options);
+    const geocoder = createGeocoder(
+      waypointIndex,
+      numberOfWaypoints,
+      this.options,
+    );
     const closeButton = geocoder.closeButton;
     const geocoderInput = geocoder.input;
-    geocoderInput.setAttribute('placeholder', geocoderPlaceholder(waypointIndex, numberOfWaypoints, this));
+    geocoderInput.setAttribute(
+      'placeholder',
+      geocoderPlaceholder(waypointIndex, numberOfWaypoints, this),
+    );
     geocoderInput.className = geocoderClass(waypointIndex, numberOfWaypoints);
 
     this.element = geocoder;
@@ -154,14 +196,24 @@ export default class GeocoderElement extends EventedControl {
     // TODO: look into why and make _updateWaypointName fix this.
     geocoderInput.value = waypoint.name ?? '';
 
-    L.DomEvent.addListener(geocoderInput, 'click', (e) => {
-      (e.currentTarget as HTMLInputElement).select();
-    }, this);
+    L.DomEvent.addListener(
+      geocoderInput,
+      'click',
+      (e) => {
+        (e.currentTarget as HTMLInputElement).select();
+      },
+      this,
+    );
 
     if (closeButton) {
-      L.DomEvent.addListener(closeButton, 'click', () => {
-        this.fire('delete', { waypoint: this.waypoint });
-      }, this);
+      L.DomEvent.addListener(
+        closeButton,
+        'click',
+        () => {
+          this.fire('delete', { waypoint: this.waypoint });
+        },
+        this,
+      );
     }
 
     createAutocomplete(geocoderInput, this);
@@ -185,14 +237,21 @@ export default class GeocoderElement extends EventedControl {
       } = this.options;
       const waypointCoordinates = waypointNameFallback(latLng);
       if (this.options.geocoder?.reverse) {
-        this.options.geocoder.reverse(latLng, 67108864 /* zoom 18 */, (result) => {
-          if (result.length > 0 && result[0].center.distanceTo(latLng) < maxGeocoderTolerance) {
-            this.waypoint.name = result[0].name;
-          } else {
-            this.waypoint.name = waypointCoordinates;
-          }
-          this.setReverseGeocodeResult();
-        });
+        this.options.geocoder.reverse(
+          latLng,
+          67108864 /* zoom 18 */,
+          (result) => {
+            if (
+              result.length > 0 &&
+              result[0].center.distanceTo(latLng) < maxGeocoderTolerance
+            ) {
+              this.waypoint.name = result[0].name;
+            } else {
+              this.waypoint.name = waypointCoordinates;
+            }
+            this.setReverseGeocodeResult();
+          },
+        );
       } else {
         this.waypoint.name = waypointCoordinates;
         this.setReverseGeocodeResult();
@@ -213,6 +272,16 @@ export default class GeocoderElement extends EventedControl {
   }
 }
 
-export function geocoderElement(waypoint: Waypoint, waypointIndex: number, numberOfWaypoints: number, options?: GeocoderElementsOptions) {
-  return new GeocoderElement(waypoint, waypointIndex, numberOfWaypoints, options);
+export function geocoderElement(
+  waypoint: Waypoint,
+  waypointIndex: number,
+  numberOfWaypoints: number,
+  options?: GeocoderElementsOptions,
+) {
+  return new GeocoderElement(
+    waypoint,
+    waypointIndex,
+    numberOfWaypoints,
+    options,
+  );
 }

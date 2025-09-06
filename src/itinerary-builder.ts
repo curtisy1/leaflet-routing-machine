@@ -1,6 +1,6 @@
-import Formatter, { FormatterOptions } from './formatter';
-import { IRoute, ItineraryEvents, RouteEvent } from './common/types';
-import EventHub from './eventhub';
+import Formatter, { type FormatterOptions } from './formatter';
+import type { IRoute, ItineraryEvents, RouteEvent } from './common/types';
+import type EventHub from './eventhub';
 
 interface ISummary extends IRoute {
   name: string;
@@ -83,12 +83,18 @@ export default class ItineraryBuilder {
     show: true,
     collapsible: undefined,
     collapseBtn: (itinerary: ItineraryBuilder) => {
-      const collapseBtn = document.createRange()
-        .createContextualFragment(`<span class='${itinerary.options.collapseBtnClass}'></span>`);
+      const collapseBtn = document
+        .createRange()
+        .createContextualFragment(
+          `<span class='${itinerary.options.collapseBtnClass}'></span>`,
+        );
       collapseBtn.addEventListener('click', itinerary.toggle);
-      itinerary.container?.insertBefore(collapseBtn, itinerary.container.firstChild);
+      itinerary.container?.insertBefore(
+        collapseBtn,
+        itinerary.container.firstChild,
+      );
     },
-    collapseBtnClass: 'leaflet-routing-collapse-btn'
+    collapseBtnClass: 'leaflet-routing-collapse-btn',
   };
 
   options: ItineraryBuilderOptions;
@@ -116,16 +122,24 @@ export default class ItineraryBuilder {
    * Builds the itinerary container that will be added to the map together with the control
    */
   buildItinerary(collapse: boolean) {
-    const { collapsible, show, containerClassName, collapseBtn = this.defaultOptions.collapseBtn } = this.options;
+    const {
+      collapsible,
+      show,
+      containerClassName,
+      collapseBtn = this.defaultOptions.collapseBtn,
+    } = this.options;
     const isCollapsible = collapsible || collapse;
 
-    const conditionalClassNames = `${(!show ? 'leaflet-routing-container-hide ' : '')} ${(isCollapsible ? 'leaflet-routing-collapsible ' : '')}`;
+    const conditionalClassNames = `${!show ? 'leaflet-routing-container-hide ' : ''} ${isCollapsible ? 'leaflet-routing-collapsible ' : ''}`;
     const container = document.createRange().createContextualFragment(`
       <div class='leaflet-routing-container leaflet-bar ${conditionalClassNames} ${containerClassName}'>
       </div>
     `);
     this.container = container.firstElementChild as HTMLDivElement;
-    this.container?.addEventListener('mousedown touchstart dblclick mousewheel', (e) => e.stopPropagation());
+    this.container?.addEventListener(
+      'mousedown touchstart dblclick mousewheel',
+      (e) => e.stopPropagation(),
+    );
 
     this.altContainer = this.createAlternativesContainer();
     this.container.append(this.altContainer);
@@ -140,23 +154,20 @@ export default class ItineraryBuilder {
    * Creates the alternatives container, so it can be added to the DOM
    */
   createAlternativesContainer() {
-    return document.createRange()
-      .createContextualFragment('<div class="leaflet-routing-alternatives-container"></div>')
-      .firstElementChild as HTMLDivElement;
+    return document
+      .createRange()
+      .createContextualFragment(
+        '<div class="leaflet-routing-alternatives-container"></div>',
+      ).firstElementChild as HTMLDivElement;
   }
 
   createNoRoutesFound() {
-    const {
-      alternativeClassName,
-      noRouteFoundMessage
-    } = this.options;
-    const altDiv = document.createRange()
-      .createContextualFragment(`
+    const { alternativeClassName, noRouteFoundMessage } = this.options;
+    const altDiv = document.createRange().createContextualFragment(`
         <div class="leaflet-routing-alt ${alternativeClassName}">
           <h2 class="routing-summary-header"><span>${noRouteFoundMessage}</span></h2>
         </div>
-      `)
-      .firstElementChild as HTMLDivElement;
+      `).firstElementChild as HTMLDivElement;
     return altDiv;
   }
 
@@ -198,18 +209,14 @@ export default class ItineraryBuilder {
   }
 
   createAlternative(alt: IRoute, index: number) {
-    const {
-      minimizedClassName,
-      alternativeClassName,
-    } = this.options;
-    const className = index > 0 ? `leaflet-routing-alt-minimized ${minimizedClassName}` : '';
-    const altDiv = document.createRange()
-      .createContextualFragment(`
+    const { minimizedClassName, alternativeClassName } = this.options;
+    const className =
+      index > 0 ? `leaflet-routing-alt-minimized ${minimizedClassName}` : '';
+    const altDiv = document.createRange().createContextualFragment(`
         <div class='leaflet-routing-alt ${alternativeClassName} ${className}'>
         ${this.createSummaryTemplate(alt)}
         </div>
-      `)
-      .firstElementChild as HTMLDivElement;
+      `).firstElementChild as HTMLDivElement;
 
     altDiv.append(this.createItineraryContainer(alt));
     altDiv.addEventListener('click', (e) => this.onAltClicked(e));
@@ -224,19 +231,22 @@ export default class ItineraryBuilder {
     let template = summaryTemplate ?? defaultTemplate;
     const data: ISummary = {
       ...{
-        distance: this.formatter.formatDistance(alt.summary.totalDistance, totalDistanceRoundingSensitivity),
-        time: this.formatter.formatTime(alt.summary.totalTime)
+        distance: this.formatter.formatDistance(
+          alt.summary.totalDistance,
+          totalDistanceRoundingSensitivity,
+        ),
+        time: this.formatter.formatTime(alt.summary.totalTime),
       },
       ...alt,
     };
 
-    if (typeof (template) === 'function') {
-      return template(data)
+    if (typeof template === 'function') {
+      return template(data);
     }
 
     for (const [key, value] of Object.entries(data)) {
       template = template.replace(`{${key}}`, (s) => {
-        return typeof (value) === 'function' ? value(s) : value;
+        return typeof value === 'function' ? value(s) : value;
       });
     }
 
@@ -248,7 +258,7 @@ export default class ItineraryBuilder {
    */
   clearAlts() {
     const el = this.altContainer;
-    while (el && el.firstChild) {
+    while (el?.firstChild) {
       el.removeChild(el.firstChild);
     }
 
@@ -289,13 +299,15 @@ export default class ItineraryBuilder {
   }
 
   onAltClicked(e: MouseEvent) {
-    const altElem = (e.target as HTMLElement).closest<HTMLElement>('.leaflet-routing-alt');
+    const altElem = (e.target as HTMLElement).closest<HTMLElement>(
+      '.leaflet-routing-alt',
+    );
     if (!altElem) {
       return;
     }
 
     this.eventHub?.trigger('routeselected', {
-      routeIndex: this.altElements.indexOf(altElem)
+      routeIndex: this.altElements.indexOf(altElem),
     });
   }
 
@@ -321,8 +333,7 @@ export default class ItineraryBuilder {
    */
   createContainer(className = '') {
     const { containerClassName } = this.options;
-    return document.createRange()
-      .createContextualFragment(`
+    return document.createRange().createContextualFragment(`
         <table class='${className} ${containerClassName}'>
           <colgroup>
             <col class='leaflet-routing-instruction-icon'></col>
@@ -343,9 +354,16 @@ export default class ItineraryBuilder {
   /**
    * Creates a DOM element for an instruction, with the provided text and distance (already formatted as string with unit); default will create a tr
    */
-  createStep(text: string, distance: string, icon?: string, steps?: HTMLElement) {
+  createStep(
+    text: string,
+    distance: string,
+    icon?: string,
+    steps?: HTMLElement,
+  ) {
     const template = document.createElement('template');
-    template.insertAdjacentHTML('afterbegin', `
+    template.insertAdjacentHTML(
+      'afterbegin',
+      `
         <tr>
           <td>
             <span class='leaflet-routing-icon leaflet-routing-icon-${icon}'></span>
@@ -357,7 +375,8 @@ export default class ItineraryBuilder {
             <span>${distance}</span>
           </td>
         </tr>
-      `);
+      `,
+    );
 
     const row = template.firstElementChild as HTMLTableRowElement;
     steps?.appendChild(row);

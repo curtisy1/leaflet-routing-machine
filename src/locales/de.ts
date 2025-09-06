@@ -1,4 +1,4 @@
-import { Locale } from './types';
+import type { Locale } from './types';
 
 const deLocale: Locale = {
   directions: {
@@ -16,49 +16,38 @@ const deLocale: Locale = {
     SlightLeft: 'leicht links',
     Left: 'links',
     SharpLeft: 'scharf links',
-    Uturn: 'Wenden'
+    Uturn: 'Wenden',
   },
   instructions: {
     // instruction, postfix if the road is named
-    'Head':
-      ['Richtung {dir}', ' auf {road}'],
-    'Continue':
-      ['Geradeaus Richtung {dir}', ' auf {road}'],
-    'SlightRight':
-      ['Leicht rechts abbiegen', ' auf {road}'],
-    'Right':
-      ['Rechts abbiegen', ' auf {road}'],
-    'SharpRight':
-      ['Scharf rechts abbiegen', ' auf {road}'],
-    'TurnAround':
-      ['Wenden'],
-    'SharpLeft':
-      ['Scharf links abbiegen', ' auf {road}'],
-    'Left':
-      ['Links abbiegen', ' auf {road}'],
-    'SlightLeft':
-      ['Leicht links abbiegen', ' auf {road}'],
-    'WaypointReached':
-      ['Zwischenhalt erreicht'],
-    'Roundabout':
-      ['Nehmen Sie die {exitStr} Ausfahrt im Kreisverkehr', ' auf {road}'],
-    'DestinationReached':
-      ['Sie haben ihr Ziel erreicht'],
-    'Fork': ['An der Kreuzung {modifier}', ' auf {road}'],
-    'Merge': ['Fahren Sie {modifier} weiter', ' auf {road}'],
-    'OnRamp': ['Fahren Sie {modifier} auf die Auffahrt', ' auf {road}'],
-    'OffRamp': ['Nehmen Sie die Ausfahrt {modifier}', ' auf {road}'],
-    'EndOfRoad': ['Fahren Sie {modifier} am Ende der Straße', ' auf {road}'],
-    'Onto': 'auf {road}'
+    Head: ['Richtung {dir}', ' auf {road}'],
+    Continue: ['Geradeaus Richtung {dir}', ' auf {road}'],
+    SlightRight: ['Leicht rechts abbiegen', ' auf {road}'],
+    Right: ['Rechts abbiegen', ' auf {road}'],
+    SharpRight: ['Scharf rechts abbiegen', ' auf {road}'],
+    TurnAround: ['Wenden'],
+    SharpLeft: ['Scharf links abbiegen', ' auf {road}'],
+    Left: ['Links abbiegen', ' auf {road}'],
+    SlightLeft: ['Leicht links abbiegen', ' auf {road}'],
+    WaypointReached: ['Zwischenhalt erreicht'],
+    Roundabout: [
+      'Nehmen Sie die {exitStr} Ausfahrt im Kreisverkehr',
+      ' auf {road}',
+    ],
+    DestinationReached: ['Sie haben ihr Ziel erreicht'],
+    Fork: ['An der Kreuzung {modifier}', ' auf {road}'],
+    Merge: ['Fahren Sie {modifier} weiter', ' auf {road}'],
+    OnRamp: ['Fahren Sie {modifier} auf die Auffahrt', ' auf {road}'],
+    OffRamp: ['Nehmen Sie die Ausfahrt {modifier}', ' auf {road}'],
+    EndOfRoad: ['Fahren Sie {modifier} am Ende der Straße', ' auf {road}'],
+    Onto: 'auf {road}',
   },
-  formatOrder: function (n) {
-    return n + '.';
-  },
+  formatOrder: (n) => `${n}.`,
   ui: {
     startPlaceholder: 'Start',
     viaPlaceholder: 'Via {viaNumber}',
-    endPlaceholder: 'Ziel'
-  }
+    endPlaceholder: 'Ziel',
+  },
 };
 
 export default deLocale;

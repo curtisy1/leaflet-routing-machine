@@ -1,10 +1,21 @@
 import L from 'leaflet';
-import Line, { LineOptions } from './line';
-import Plan, { PlanOptions } from './plan';
-import OSRMv1, { OSRMv1Options } from './osrm-v1';
-import { IRoute, IRouter, ItineraryEvents, RouteEvent, RoutesFoundEvent, RoutingErrorEvent, RoutingOptions, RoutingStartEvent } from './common/types';
-import Waypoint from './waypoint';
-import ItineraryBuilder, { ItineraryBuilderOptions } from './itinerary-builder';
+import Line, { type LineOptions } from './line';
+import Plan, { type PlanOptions } from './plan';
+import OSRMv1, { type OSRMv1Options } from './osrm-v1';
+import type {
+  IRoute,
+  IRouter,
+  ItineraryEvents,
+  RouteEvent,
+  RoutesFoundEvent,
+  RoutingErrorEvent,
+  RoutingOptions,
+  RoutingStartEvent,
+} from './common/types';
+import type Waypoint from './waypoint';
+import ItineraryBuilder, {
+  type ItineraryBuilderOptions,
+} from './itinerary-builder';
 import EventHub from './eventhub';
 
 interface ControlOptions extends L.ControlOptions {
@@ -51,7 +62,7 @@ interface ControlOptions extends L.ControlOptions {
    * @default false
    */
   showAlternatives?: boolean;
-  defaultErrorHandler?: (e: any) => void;
+  defaultErrorHandler?: (e: RoutingErrorEvent) => void;
   /**
    * The router to use to calculate routes between waypoints
    * @default {@link OSRMv1}
@@ -94,20 +105,21 @@ interface ControlRoutingOptions extends RoutingOptions {
   waypoints?: Waypoint[];
 }
 
+// biome-ignore lint/suspicious/noUnsafeDeclarationMerging: Typescript needs this to generate proper js code
 class RoutingControl {
-  constructor(...args: any[]) {
-  }
+  // biome-ignore lint/complexity/noUselessConstructor: Is used for the actual implementation to handle option assignment
+  constructor(..._args: unknown[]) {}
 }
 
-interface RoutingControl extends L.Control, L.Evented {
-}
+// biome-ignore lint/correctness/noUnusedVariables: Typescript needs this to generate proper js code
+interface RoutingControl extends L.Control, L.Evented {}
 L.Util.extend(RoutingControl.prototype, L.Control.prototype);
 L.Util.extend(RoutingControl.prototype, L.Evented.prototype);
 
 /**
  * Combining the other classes into a full routing user interface. The main class of the plugin. Extends [L.Control](https://leafletjs.com/reference.html#control).
  * ## Usage example
- * 
+ *
  * ```typescript
  * var map = L.map('map');
  *
@@ -130,10 +142,12 @@ export default class Control extends RoutingControl {
       color: '#03f',
       fillColor: 'white',
       opacity: 1,
-      fillOpacity: 0.7
+      fillOpacity: 0.7,
     },
     fitSelectedRoutes: 'smart',
-    routeLine: (route: IRoute, options: LineOptions) => { return new Line(route, options); },
+    routeLine: (route: IRoute, options: LineOptions) => {
+      return new Line(route, options);
+    },
     autoRoute: true,
     routeWhileDragging: false,
     routeDragInterval: 500,
@@ -142,7 +156,7 @@ export default class Control extends RoutingControl {
     autoSelectFirstRoute: true,
     defaultErrorHandler: (e: RoutingErrorEvent) => {
       console.error('Routing error:', e.error);
-    }
+    },
   };
 
   controlOptions: ControlOptions;
@@ -167,15 +181,26 @@ export default class Control extends RoutingControl {
     super(options);
 
     this.controlOptions = {
-      ...this.defaultOptions as ControlOptions,
+      ...(this.defaultOptions as ControlOptions),
       ...options,
     };
 
-    const { routeWhileDragging = this.defaultOptions.routeWhileDragging } = this.controlOptions;
-    this.router = this.controlOptions.router || new OSRMv1(this.controlOptions.routerOptions);
-    this.plan = this.controlOptions.plan || new Plan(this.controlOptions.waypoints || [], this.controlOptions.planOptions);
-    this.eventHub = this.controlOptions.eventHub ?? new EventHub<ItineraryEvents>();
-    this.itineraryBuilder = this.controlOptions.itineraryBuilder || new ItineraryBuilder(this.controlOptions.itineraryBuilderOptions);
+    const { routeWhileDragging = this.defaultOptions.routeWhileDragging } =
+      this.controlOptions;
+    this.router =
+      this.controlOptions.router ||
+      new OSRMv1(this.controlOptions.routerOptions);
+    this.plan =
+      this.controlOptions.plan ||
+      new Plan(
+        this.controlOptions.waypoints || [],
+        this.controlOptions.planOptions,
+      );
+    this.eventHub =
+      this.controlOptions.eventHub ?? new EventHub<ItineraryEvents>();
+    this.itineraryBuilder =
+      this.controlOptions.itineraryBuilder ||
+      new ItineraryBuilder(this.controlOptions.itineraryBuilderOptions);
     this.itineraryBuilder.registerEventHub(this.eventHub);
     this.requestCount = 0;
 
@@ -196,8 +221,10 @@ export default class Control extends RoutingControl {
     this.eventHub.on('routesfound', (e) => this.routesFound(e));
     this.eventHub.on('altRowMouseOver', (coordinate) => {
       if (this.map) {
-        this.marker = L.circleMarker(coordinate,
-          this.controlOptions.pointMarkerStyle).addTo(this.map);
+        this.marker = L.circleMarker(
+          coordinate,
+          this.controlOptions.pointMarkerStyle,
+        ).addTo(this.map);
       }
     });
     this.eventHub.on('altRowMouseOut', () => {
@@ -210,7 +237,9 @@ export default class Control extends RoutingControl {
       this.map?.panTo(coordinate);
     });
 
-    const container = this.itineraryBuilder.buildItinerary(map.getSize().x <= 640);
+    const container = this.itineraryBuilder.buildItinerary(
+      map.getSize().x <= 640,
+    );
 
     if (this.plan.options.geocoder) {
       container.insertBefore(this.plan.createGeocoders(), container.firstChild);
@@ -253,7 +282,11 @@ export default class Control extends RoutingControl {
   /**
    * Allows adding, removing or replacing waypoints in the control’s plan. Syntax is the same as in [Array#splice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice).
    */
-  spliceWaypoints(startIndex: number, deleteCount = 0, ...newWaypoints: Waypoint[]) {
+  spliceWaypoints(
+    startIndex: number,
+    deleteCount = 0,
+    ...newWaypoints: Waypoint[]
+  ) {
     this.plan.spliceWaypoints(startIndex, deleteCount, ...newWaypoints);
   }
 
@@ -286,13 +319,15 @@ export default class Control extends RoutingControl {
 
   routeSelected(e: RouteEvent) {
     const { routeIndex } = e;
-    const selectRoute = this.routes.find((r) => r.routesIndex === routeIndex);
-    if (!selectRoute) {
+    const route = this.routes.find((r) => r.routesIndex === routeIndex);
+    if (!route) {
       return;
     }
 
-    const route = this.selectedRoute = selectRoute;
-    const alternatives = this.controlOptions.showAlternatives ? this.routes.filter((r) => r.routesIndex !== routeIndex) : [];
+    this.selectedRoute = route;
+    const alternatives = this.controlOptions.showAlternatives
+      ? this.routes.filter((r) => r.routesIndex !== routeIndex)
+      : [];
 
     this.updateLines(route, alternatives);
 
@@ -307,10 +342,14 @@ export default class Control extends RoutingControl {
 
   fitLineBounds() {
     const fitMode = this.controlOptions.fitSelectedRoutes;
-    const fitBounds = (fitMode === 'smart' && !this.waypointsVisible()) || (fitMode !== 'smart' && fitMode);
+    const fitBounds =
+      (fitMode === 'smart' && !this.waypointsVisible()) ||
+      (fitMode !== 'smart' && fitMode);
 
     if (fitBounds && (this.line || this.alternatives.length)) {
-      const bounds = (this.line ? [this.line] : []).concat(this.alternatives || []).map((l) => l.getBounds().getCenter());
+      const bounds = (this.line ? [this.line] : [])
+        .concat(this.alternatives || [])
+        .map((l) => l.getBounds().getCenter());
       this.map?.fitBounds(L.latLngBounds(bounds));
     }
   }
@@ -328,7 +367,11 @@ export default class Control extends RoutingControl {
       const mapSize = this.map.getSize();
 
       for (const waypoint of waypoints) {
-        const point = this.map.latLngToLayerPoint(waypoint.latLng!);
+        if (!waypoint.latLng) {
+          continue;
+        }
+
+        const point = this.map.latLngToLayerPoint(waypoint.latLng);
 
         if (bounds) {
           bounds.extend(point);
@@ -338,8 +381,11 @@ export default class Control extends RoutingControl {
       }
 
       const boundsSize = bounds.getSize();
-      return (boundsSize.x > mapSize.x / 5 || boundsSize.y > mapSize.y / 5) && this.waypointsInViewport();
-    } catch (e) {
+      return (
+        (boundsSize.x > mapSize.x / 5 || boundsSize.y > mapSize.y / 5) &&
+        this.waypointsInViewport()
+      );
+    } catch {
       return false;
     }
   }
@@ -351,10 +397,10 @@ export default class Control extends RoutingControl {
 
     try {
       const mapBounds = this.map.getBounds();
-      return this.getWaypoints()
-        .filter((waypoint) => waypoint.latLng)
-        .some((waypoint) => mapBounds.contains(waypoint.latLng!));
-    } catch (e) {
+      return this.getWaypoints().some(
+        (waypoint) => waypoint.latLng && mapBounds.contains(waypoint.latLng),
+      );
+    } catch {
       return false;
     }
   }
@@ -367,13 +413,13 @@ export default class Control extends RoutingControl {
     // add alternatives first so they lie below the main route
     this.alternatives = [];
     alternatives?.forEach((alt, i) => {
-      this.alternatives[i] = routeLine(alt,
-        {
-          ...{
-            isAlternative: true
-          },
-          ...(this.controlOptions.altLineOptions || this.controlOptions.lineOptions)
-        });
+      this.alternatives[i] = routeLine(alt, {
+        ...{
+          isAlternative: true,
+        },
+        ...(this.controlOptions.altLineOptions ||
+          this.controlOptions.lineOptions),
+      });
 
       if (!this.map) {
         return;
@@ -387,14 +433,13 @@ export default class Control extends RoutingControl {
       return;
     }
 
-    this.line = routeLine(route,
-      {
-        ...{
-          addWaypoints: addWaypoints,
-          extendToWaypoints: this.controlOptions.waypointMode === 'connect'
-        },
-        ...this.controlOptions.lineOptions
-      });
+    this.line = routeLine(route, {
+      ...{
+        addWaypoints: addWaypoints,
+        extendToWaypoints: this.controlOptions.waypointMode === 'connect',
+      },
+      ...this.controlOptions.lineOptions,
+    });
 
     this.line.addTo(this.map);
     this.hookEvents(this.line);
@@ -410,7 +455,9 @@ export default class Control extends RoutingControl {
 
   hookAltEvents(l: Line) {
     l.on('linetouched', (e) => {
-      this.eventHub.trigger('routeselected', { routeIndex: e.target.route.routesIndex });
+      this.eventHub.trigger('routeselected', {
+        routeIndex: e.target.route.routesIndex,
+      });
     });
   }
 
@@ -466,7 +513,7 @@ export default class Control extends RoutingControl {
     const selected = alternatives.splice(this.selectedRoute.routesIndex, 1)[0];
     this.updateLines(
       selected,
-      this.controlOptions.showAlternatives ? alternatives : []
+      this.controlOptions.showAlternatives ? alternatives : [],
     );
   }
 
@@ -480,7 +527,7 @@ export default class Control extends RoutingControl {
       setTimeout(() => {
         this.pendingRequest?.abortController?.abort();
         this.pendingRequest = null;
-      }, 1000)
+      }, 1000);
     }
 
     const routeOptions = options || {};
@@ -514,7 +561,9 @@ export default class Control extends RoutingControl {
         if (ts === this.requestCount) {
           this.clearLines();
 
-          routes.forEach((route, i) => { route.routesIndex = i; });
+          routes.forEach((route, i) => {
+            route.routesIndex = i;
+          });
 
           if (!routeOptions.geometryOnly) {
             this.fire('routesfound', { waypoints, routes: routes });
@@ -524,6 +573,7 @@ export default class Control extends RoutingControl {
             this.routeSelected({ routeIndex: routes[0].routesIndex });
           }
         }
+        // biome-ignore lint/suspicious/noExplicitAny: any is valid for errors
       } catch (err: any) {
         if (err?.type !== 'abort') {
           this.fire('routingerror', { error: err });
@@ -572,7 +622,13 @@ export default class Control extends RoutingControl {
       return;
     }
 
-    if (this.router.requiresMoreDetail(this.selectedRoute, this.map.getZoom(), this.map.getBounds())) {
+    if (
+      this.router.requiresMoreDetail(
+        this.selectedRoute,
+        this.map.getZoom(),
+        this.map.getBounds(),
+      )
+    ) {
       try {
         const routes = await this.route({
           simplifyGeometry: false,
@@ -586,6 +642,7 @@ export default class Control extends RoutingControl {
         }
 
         this.updateLineCallback(routes);
+        // biome-ignore lint/suspicious/noExplicitAny: any is valid for errors
       } catch (err: any) {
         if (err.type !== 'abort') {
           this.clearLines();
@@ -598,6 +655,6 @@ export default class Control extends RoutingControl {
 /**
  * Instantiates a new routing control with the provided options; unless specific router and/or plan instances are provided, options are also passed to their constructors
  */
-export function routingControl(options?: ControlOptions) { 
-  return new Control(options); 
+export function routingControl(options?: ControlOptions) {
+  return new Control(options);
 }

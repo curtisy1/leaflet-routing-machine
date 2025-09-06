@@ -1,7 +1,14 @@
 import L from 'leaflet';
-import Localization from './localization';
-import { Locale, Units } from './locales/types';
-import { IInstruction, ITextInstruction, IDirectionInstruction } from './common/types';
+import type { Locale, Units } from './locales/types';
+import {
+  type IInstruction,
+  type ITextInstruction,
+  type IDirectionInstruction,
+  InstructionType,
+  InstructionModifier,
+} from './common/types';
+import { en as enLocale } from './locales';
+import defaultUnits from './locales/units';
 
 export interface FormatterOptions {
   /**
@@ -31,11 +38,15 @@ export interface FormatterOptions {
   distanceTemplate?: string;
 }
 
-function isTextInstruction(instruction: ITextInstruction | IDirectionInstruction): instruction is ITextInstruction {
+function isTextInstruction(
+  instruction: ITextInstruction | IDirectionInstruction,
+): instruction is ITextInstruction {
   return (instruction as ITextInstruction).text !== undefined;
 }
 
-function isDirectionInstruction(instruction: ITextInstruction | IDirectionInstruction): instruction is IDirectionInstruction {
+function isDirectionInstruction(
+  instruction: ITextInstruction | IDirectionInstruction,
+): instruction is IDirectionInstruction {
   return (instruction as IDirectionInstruction).type !== undefined;
 }
 
@@ -45,40 +56,31 @@ function isDirectionInstruction(instruction: ITextInstruction | IDirectionInstru
 export default class Formatter extends L.Class {
   private readonly defaultOptions = {
     units: 'metric',
-    unitNames: {
-      meters: 'm',
-      kilometers: 'km',
-      yards: 'yd',
-      miles: 'mi',
-      hours: 'h',
-      minutes: 'min',
-      seconds: 's'
-    },
+    unitNames: defaultUnits,
     roundingSensitivity: 1,
-    distanceTemplate: '{value} {unit}'
+    distanceTemplate: '{value} {unit}',
   };
 
   options: FormatterOptions;
-
-  private readonly localization: Localization;
 
   constructor(options?: FormatterOptions) {
     super();
 
     this.options = {
-      ...this.defaultOptions as FormatterOptions,
+      ...(this.defaultOptions as FormatterOptions),
       ...options,
-    }
-
-    this.localization = new Localization(this.options.locale);
+    };
   }
 
   /**
    * Formats a distance given in meters to a string with the given (or suitable if not provided) precision and unit
    */
   formatDistance(distance: number, sensitivity = 0) {
-    const { distanceTemplate = this.defaultOptions.distanceTemplate } = this.options;
-    const unitNames = this.options.unitNames || this.localization.localize('units');
+    const { distanceTemplate = this.defaultOptions.distanceTemplate } =
+      this.options;
+    const unitNames =
+      this.options.unitNames ||
+      ((this.options.locale ?? enLocale).units ?? defaultUnits);
     const simpleRounding = sensitivity <= 0;
     let value: number;
     let yards: number;
@@ -92,19 +94,19 @@ export default class Formatter extends L.Class {
       if (yards >= 1000) {
         data = {
           value: this.round(distance / 1609.344, sensitivity),
-          unit: unitNames.miles
+          unit: unitNames.miles,
         };
       } else {
         data = {
           value: this.round(yards, sensitivity),
-          unit: unitNames.yards
+          unit: unitNames.yards,
         };
       }
     } else {
       value = this.round(distance, sensitivity);
       data = {
-        value: value >= 1000 ? (value / 1000) : value,
-        unit: value >= 1000 ? unitNames.kilometers : unitNames.meters
+        value: value >= 1000 ? value / 1000 : value,
+        unit: value >= 1000 ? unitNames.kilometers : unitNames.meters,
       };
     }
 
@@ -115,12 +117,13 @@ export default class Formatter extends L.Class {
     return L.Util.template(distanceTemplate, data);
   }
 
-  round(distance: number, sensitivity?: number ) {
-    const { roundingSensitivity = this.defaultOptions.roundingSensitivity } = this.options;
+  round(distance: number, sensitivity?: number) {
+    const { roundingSensitivity = this.defaultOptions.roundingSensitivity } =
+      this.options;
     const s = sensitivity || roundingSensitivity;
-    const pow10 = Math.pow(10, (Math.floor(distance / s) + '').length - 1);
+    const pow10 = 10 ** (`${Math.floor(distance / s)}`.length - 1);
     const r = Math.floor(distance / pow10);
-    const p = (r > 5) ? pow10 : pow10 / 2;
+    const p = r > 5 ? pow10 : pow10 / 2;
 
     return Math.round(distance / p) * p;
   }
@@ -129,7 +132,9 @@ export default class Formatter extends L.Class {
    * Formats a time duration, given in seconds, to a string with suitable precision and unit
    */
   formatTime(time: number) {
-    const unitNames = this.options.unitNames || this.localization.localize('units');
+    const unitNames =
+      this.options.unitNames ||
+      ((this.options.locale ?? enLocale).units ?? defaultUnits);
     // More than 30 seconds precision looks ridiculous
     const t = Math.round(time / 30) * 30;
 
@@ -140,7 +145,7 @@ export default class Formatter extends L.Class {
     } else if (t > 300) {
       return `${Math.round(t / 60)} ${unitNames.minutes}`;
     } else if (t >= 60) {
-      const seconds = (t % 60 !== 0 ? `${t % 60} ${unitNames.seconds}` : '');
+      const seconds = t % 60 !== 0 ? `${t % 60} ${unitNames.seconds}` : '';
       return `${Math.round(t / 60)} ${unitNames.minutes}${seconds}`;
     } else {
       return `${t} ${unitNames.seconds}`;
@@ -152,14 +157,19 @@ export default class Formatter extends L.Class {
    */
   formatInstruction(instruction: IInstruction, index: number) {
     if (!isTextInstruction(instruction)) {
-      return this.capitalize(L.Util.template(this.getInstructionTemplate(instruction, index),
-        {
-          ...instruction, ...{
-            exitStr: instruction.exit ? this.localization.localize('formatOrder')(instruction.exit) : '',
-            dir: this.localization.localize(['directions', instruction.direction]),
-            modifier: this.localization.localize(['directions', instruction.modifier])
-          }
-        }));
+      const locale = this.options.locale ?? enLocale;
+      return this.capitalize(
+        L.Util.template(this.getInstructionTemplate(instruction, index), {
+          ...instruction,
+          ...{
+            exitStr: instruction.exit
+              ? locale.formatOrder(instruction.exit)
+              : '',
+            dir: locale.directions[instruction.direction],
+            modifier: locale.directions[instruction.modifier],
+          },
+        }),
+      );
     } else {
       return instruction.text;
     }
@@ -175,37 +185,66 @@ export default class Formatter extends L.Class {
     }
 
     switch (instruction.type) {
-      case 'Head':
+      case InstructionType.Head:
         if (index === 0) {
           return 'depart';
         }
         break;
-      case 'WaypointReached':
+      case InstructionType.WaypointReached:
         return 'via';
-      case 'Roundabout':
+      case InstructionType.Roundabout:
         return 'enter-roundabout';
-      case 'DestinationReached':
+      case InstructionType.DestinationReached:
         return 'arrive';
     }
 
     switch (instruction.modifier) {
-      case 'Straight':
+      case InstructionModifier.Straight:
         return 'continue';
-      case 'SlightRight':
+      case InstructionModifier.SlightRight:
         return 'bear-right';
-      case 'Right':
+      case InstructionModifier.Right:
         return 'turn-right';
-      case 'SharpRight':
+      case InstructionModifier.SharpRight:
         return 'sharp-right';
-      case 'TurnAround':
-      case 'Uturn':
+      case InstructionModifier.TurnAround:
+      case InstructionModifier.Uturn:
         return 'u-turn';
-      case 'SharpLeft':
+      case InstructionModifier.SharpLeft:
         return 'sharp-left';
-      case 'Left':
+      case InstructionModifier.Left:
         return 'turn-left';
-      case 'SlightLeft':
+      case InstructionModifier.SlightLeft:
         return 'bear-left';
+    }
+  }
+
+  /**
+   * Get the instruction for a specific direction by the instruction type.
+   * If the type is something other than a direction, nothing is returned.
+   * @param instructionType
+   */
+  getDirectionInstruction(instructionType: InstructionType) {
+    const locale = this.options.locale ?? enLocale;
+    switch (instructionType) {
+      case InstructionType.Left:
+        return locale.directions.Left ?? '';
+      case InstructionType.Right:
+        return locale.directions.Right ?? '';
+      case InstructionType.SharpLeft:
+        return locale.directions.SharpLeft ?? '';
+      case InstructionType.SharpRight:
+        return locale.directions.SharpRight ?? '';
+      case InstructionType.SlightLeft:
+        return locale.directions.SlightLeft ?? '';
+      case InstructionType.SlightRight:
+        return locale.directions.SlightRight ?? '';
+      case InstructionType.TurnAround:
+        return locale.directions.TurnAround ?? '';
+      case InstructionType.Uturn:
+        return locale.directions.Uturn ?? '';
+      default:
+        return '';
     }
   }
 
@@ -214,17 +253,27 @@ export default class Formatter extends L.Class {
   }
 
   getInstructionTemplate(instruction: IDirectionInstruction, index: number) {
-    const type = instruction.type === 'Straight' ? (index === 0 ? 'Head' : 'Continue') : instruction.type;
-    let strings = this.localization.localize(['instructions', type]);
+    const locale = this.options.locale ?? enLocale;
+    let type = instruction.type;
+    if (type === InstructionType.Straight) {
+      if (index === 0) {
+        type = InstructionType.Head;
+      } else {
+        type = InstructionType.Continue;
+      }
+    }
 
+    let strings = locale.instructions[type];
     if (!strings) {
       strings = [
-        this.localization.localize(['directions', type]),
-        ` ${this.localization.localize(['instructions', 'Onto'])}`
+        this.getDirectionInstruction(type),
+        ` ${locale.instructions.Onto}`,
       ];
     }
 
-    return strings[0] + (strings.length > 1 && instruction.road ? strings[1] : '');
+    return (
+      strings[0] + (strings.length > 1 && instruction.road ? strings[1] : '')
+    );
   }
 }
 

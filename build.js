@@ -1,7 +1,7 @@
 const esbuild = require('esbuild');
 const { nodeExternalsPlugin } = require('esbuild-node-externals');
-const fs = require('fs');
-const { exec } = require('child_process');
+const fs = require('node:fs');
+const { exec } = require('node:child_process');
 
 const tsFiles = [];
 
@@ -35,24 +35,24 @@ const configs = {
       bundle: true,
       entryPoints: ['./src/index.ts'],
       outfile: 'dist/umd/index.js',
-      globalName: 'L.Routing'
-    }
+      globalName: 'L.Routing',
+    },
   },
   esm: {
     ...baseConfig,
     ...{
       format: 'esm',
       outdir: 'dist/esm',
-      plugins: [nodeExternalsPlugin()]
-    }
+      plugins: [nodeExternalsPlugin()],
+    },
   },
   cjs: {
     ...baseConfig,
     ...{
       format: 'cjs',
       outdir: 'dist/cjs',
-      plugins: [nodeExternalsPlugin()]
-    }
+      plugins: [nodeExternalsPlugin()],
+    },
   },
 };
 
@@ -60,8 +60,8 @@ exec('tsc', (error) => {
   if (error) {
     console.log(error.message);
     console.log(error.stack);
-    console.log('Error code: '+error.code);
-    console.log('Signal received: '+error.signal);
+    console.log(`Error code: ${error.code}`);
+    console.log(`Signal received: ${error.signal}`);
   }
 });
 
